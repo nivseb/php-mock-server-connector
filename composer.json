@@ -1,0 +1,59 @@
+{
+    "name": "nivseb/php-mock-server-connector",
+    "description": "Small tool to use mock-server/mockserver in a easy way from php based tests.",
+    "type": "library",
+    "keywords": [
+        "php",
+        "mock",
+        "mocking",
+        "test",
+        "testing",
+        "phpunit",
+        "request"
+    ],
+    "homepage": "https://github.com/nivseb/php-mock-server-connector",
+    "support": {
+        "issues": "https://github.com/nivseb/php-mock-server-connector/issues",
+        "source": "https://github.com/nivseb/php-mock-server-connector"
+    },
+    "authors": [
+        {
+            "name": "Marvin Naumann",
+            "email": "1013829+nivseb@users.noreply.github.com",
+            "homepage": "https://github.com/nivseb",
+            "role": "Author"
+        }
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Nivseb\\PhpMockServerConnector\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=8.1",
+        "guzzlehttp/guzzle": "^7.2",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2",
+        "phpunit/phpunit": "^10.5",
+        "pestphp/pest-plugin-faker": "^2"
+    },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        }
+    }
+}

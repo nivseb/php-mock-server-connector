@@ -1,0 +1,141 @@
+<?php
+
+namespace Nivseb\PhpMockServerConnector\Expectation;
+
+use Nivseb\PhpMockServerConnector\Exception\AlreadyExpectedExpectationException;
+use Nivseb\PhpMockServerConnector\Exception\FailCreateExpectationException;
+use Nivseb\PhpMockServerConnector\Exception\MissingServerInitExceptionAbstract;
+use Nivseb\PhpMockServerConnector\Server\MockServer;
+use Nivseb\PhpMockServerConnector\Server\MockServerEndpoint;
+use Nivseb\PhpMockServerConnector\Structs\MockServerExpectation;
+
+class PendingExpectation
+{
+    protected MockServerEndpoint $mockServerEndpoint;
+    protected MockServerExpectation $expectation;
+
+    protected ?RemoteExpectation $remoteExpectation = null;
+
+    public function __construct(
+        MockServerEndpoint $mockServerEndpoint,
+        string             $method,
+        string             $url
+    )
+    {
+        $this->mockServerEndpoint = $mockServerEndpoint;
+        $this->expectation = new MockServerExpectation($method, $this->mockServerEndpoint->getBasePath() . $url);
+    }
+
+    /**
+     * @throws FailCreateExpectationException
+     * @throws MissingServerInitExceptionAbstract
+     */
+    public function run(): void
+    {
+        $this->remoteExpectation = MockServer::getConnector()->applyExpectation($this->expectation);
+        $this->mockServerEndpoint->registerExpectation($this->remoteExpectation);
+    }
+
+    /**
+     * @param array<string,string|int|float|bool> $headers
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function andReturn(int $statusCode, array|string|null $responseBody = null, ?array $headers = null): static
+    {
+        if ($this->remoteExpectation) {
+            throw new AlreadyExpectedExpectationException($this->remoteExpectation);
+        }
+
+        $this->expectation->responseStatusCode = $statusCode;
+        $this->expectation->responseBody = $responseBody;
+        $this->expectation->responseHeaders = $headers;
+
+        return $this;
+    }
+
+    /**
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function times(int $limit): static
+    {
+        if ($this->remoteExpectation) {
+            throw new AlreadyExpectedExpectationException($this->remoteExpectation);
+        }
+
+        $this->expectation->times = $limit;
+        return $this;
+    }
+
+    /**
+     * @param array<string,string|int|float|bool> $parameters
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function withPathParameters(array $parameters): static
+    {
+        if ($this->remoteExpectation) {
+            throw new AlreadyExpectedExpectationException($this->remoteExpectation);
+        }
+
+        $this->expectation->pathParameters = $parameters;
+
+        return $this;
+    }
+
+    /**
+     * @param array<string,string|int|float|bool> $parameters
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function withQueryParameters(array $parameters): static
+    {
+        if ($this->remoteExpectation) {
+            throw new AlreadyExpectedExpectationException($this->remoteExpectation);
+        }
+
+        $this->expectation->queryParameters = $parameters;
+
+        return $this;
+    }
+
+
+    /**
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function withBody(array|string $body): static
+    {
+        if ($this->remoteExpectation) {
+            throw new AlreadyExpectedExpectationException($this->remoteExpectation);
+        }
+
+        $this->expectation->requestBody = $body;
+
+        return $this;
+    }
+
+    /**
+     * @param array<string,string|int|float|bool> $headers
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function withHeaders(array $headers): static
+    {
+        if ($this->remoteExpectation) {
+            throw new AlreadyExpectedExpectationException($this->remoteExpectation);
+        }
+
+        $this->expectation->requestHeaders = $headers;
+
+        return $this;
+    }
+
+    /**
+     * @throws FailCreateExpectationException
+     * @throws MissingServerInitExceptionAbstract
+     */
+    public function __destruct()
+    {
+        if ($this->remoteExpectation) {
+            return;
+        }
+
+        $this->run();
+    }
+}
