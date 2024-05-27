@@ -1,0 +1,12 @@
+parameters:
+	level: 8
+	paths:
+		- ../src
+		- ../tests
+	parallel:
+		maximumNumberOfProcesses: 4
+	excludePaths:
+		- ./
+	reportUnmatchedIgnoredErrors: true
+	checkMissingIterableValueType: false
+	checkGenericClassInNonGenericObjectType: false
