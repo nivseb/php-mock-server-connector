@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Server;
+namespace Tests\Unit;
 
 use Nivseb\PhpMockServerConnector\Server\MockServer;
 use Nivseb\PhpMockServerConnector\Server\MockServerEndpoint;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Server;
+namespace Tests\Unit;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
