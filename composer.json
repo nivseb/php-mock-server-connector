@@ -37,8 +37,7 @@
     },
     "require": {
         "php": ">=8.1",
-        "guzzlehttp/guzzle": "^7.2",
-        "ext-curl": "*"
+        "guzzlehttp/guzzle": "^7.2"
     },
     "scripts": {
         "check" : [
