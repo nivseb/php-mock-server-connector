@@ -40,7 +40,8 @@ in PHPUnit tests. This code will verify the expectations in your [MockServer ins
 ```
 
 For PHPUnit tests the package comes with the trait `UseMockServer`. This adds
-two methods to the test class. Now your integration can look like this:
+two methods to the test class `initMockServer` and `closeMockServer`. The method `closeMockServer` is called in the
+tearDown from the phpunit test. Now your integration can look like this:
 
 ```php
     use Nivseb\PhpMockServerConnector\PhpUnit\UseMockServer;
@@ -53,12 +54,6 @@ two methods to the test class. Now your integration can look like this:
         {
             parent::setUp();
             $this->initMockServer('https://your_mock_server.localhost');
-        }
-
-        protected function tearDown(): void
-        {
-            $this->closeMockServer();
-            parent::tearDown();
         }
     }
 ```
