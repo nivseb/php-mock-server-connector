@@ -6,7 +6,7 @@ use Nivseb\PhpMockServerConnector\Server\MockServer;
 use Nivseb\PhpMockServerConnector\Server\MockServerEndpoint;
 use function Pest\Faker\fake;
 
-test(
+it(
     'auto register endpoint to the mock server container',
     function (): void {
         expect(MockServer::getEndpoints())->toBeArray()->toBeEmpty();
@@ -15,7 +15,7 @@ test(
     }
 );
 
-test(
+it(
     'can access endpoint from server with path',
     function (): void {
         $endpoint = new MockServerEndpoint('/my/fake/path');
@@ -23,14 +23,14 @@ test(
     }
 );
 
-test(
+it(
     'the default server url should be an empty string',
     function (): void {
         expect(MockServer::getMockServerUrl())->toBe('');
     }
 );
 
-test(
+it(
     'server url is given url for init',
     function (): void {
         $expectedUrl = fake()->url();
@@ -39,7 +39,7 @@ test(
     }
 );
 
-test(
+it(
     'second init overwrite existing url',
     function (): void {
         $expectedUrl = fake()->url();

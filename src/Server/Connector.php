@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Nivseb\PhpMockServerConnector\Exception\FailCreateExpectationException;
-use Nivseb\PhpMockServerConnector\Exception\FailResetAbstractMockServerException;
+use Nivseb\PhpMockServerConnector\Exception\FailResetMockServerException;
 use Nivseb\PhpMockServerConnector\Exception\UnsuccessfulVerificationException;
 use Nivseb\PhpMockServerConnector\Exception\VerificationFailException;
 use Nivseb\PhpMockServerConnector\Expectation\RemoteExpectation;
@@ -23,17 +23,17 @@ class Connector
     }
 
     /**
-     * @throws FailResetAbstractMockServerException
+     * @throws FailResetMockServerException
      */
     public function reset(): void
     {
         try {
             $response = $this->client->put('/mockserver/reset');
             if ($response->getStatusCode() !== 200) {
-                throw new FailResetAbstractMockServerException();
+                throw new FailResetMockServerException($response);
             }
         } catch (GuzzleException $exception) {
-            throw new FailResetAbstractMockServerException($exception);
+            throw new FailResetMockServerException(previous: $exception);
         }
     }
 
@@ -78,7 +78,7 @@ class Connector
                         ],
                         'times' => [
                             'atLeast' => $expectation->expectation->times,
-                            'atMost'  => $expectation->expectation->times,
+                            'atMost' => $expectation->expectation->times,
                         ],
                     ],
                 ]
@@ -113,7 +113,7 @@ class Connector
             'times' => [
                 'remainingTimes' => $expectation->times,
             ],
-            'httpRequest'  => $this->buildRequestForMockServerExpectation($expectation),
+            'httpRequest' => $this->buildRequestForMockServerExpectation($expectation),
             'httpResponse' => $this->buildResponseForMockServerExpectation($expectation),
         ];
     }
@@ -122,7 +122,7 @@ class Connector
     {
         $request = [
             'method' => $expectation->method,
-            'path'   => $expectation->url,
+            'path' => $expectation->url,
         ];
 
         if ($expectation->pathParameters) {
@@ -147,8 +147,8 @@ class Connector
     protected function buildPropertyMatcher(array $properties): array
     {
         return array_map(
-            fn (string $name, bool|float|int|string $expectedValue): array => [
-                'name'   => $name,
+            fn(string $name, bool|float|int|string $expectedValue): array => [
+                'name' => $name,
                 'values' => [$expectedValue],
             ],
             array_keys($properties),
@@ -172,7 +172,7 @@ class Connector
 
     protected function getMessageFromResponse(ResponseInterface $response): string
     {
-        $result = $response->getBody()->read((int) $response->getHeaderLine('Content-Length'));
+        $result = $response->getBody()->read((int)$response->getHeaderLine('Content-Length'));
 
         $matches = [];
         if (preg_match('/^(.*), expected:<\{/', $result, $matches)) {

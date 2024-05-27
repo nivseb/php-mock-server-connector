@@ -2,7 +2,7 @@
 
 namespace Nivseb\PhpMockServerConnector\Server;
 
-use Nivseb\PhpMockServerConnector\Exception\FailResetAbstractMockServerException;
+use Nivseb\PhpMockServerConnector\Exception\FailResetMockServerException;
 use Nivseb\PhpMockServerConnector\Exception\MissingServerInitExceptionAbstract;
 use Nivseb\PhpMockServerConnector\Exception\UnsuccessfulVerificationException;
 use Nivseb\PhpMockServerConnector\Exception\VerificationFailException;
@@ -17,7 +17,7 @@ class MockServer
     protected static ?Connector $connector = null;
 
     /**
-     * @throws FailResetAbstractMockServerException
+     * @throws FailResetMockServerException
      * @throws MissingServerInitExceptionAbstract
      */
     public static function init(string $mockServerUrl): void
@@ -28,7 +28,7 @@ class MockServer
     }
 
     /**
-     * @throws FailResetAbstractMockServerException
+     * @throws FailResetMockServerException
      * @throws MissingServerInitExceptionAbstract
      */
     public static function reset(): void
@@ -97,7 +97,7 @@ class MockServer
 
     /**
      * @throws UnsuccessfulVerificationException
-     * @throws FailResetAbstractMockServerException
+     * @throws FailResetMockServerException
      * @throws VerificationFailException
      * @throws MissingServerInitExceptionAbstract
      */
