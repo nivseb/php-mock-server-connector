@@ -14,7 +14,6 @@ use Nivseb\PhpMockServerConnector\Exception\VerificationFailException;
 use Nivseb\PhpMockServerConnector\Expectation\RemoteExpectation;
 use Nivseb\PhpMockServerConnector\Server\Connector;
 use Nivseb\PhpMockServerConnector\Structs\MockServerExpectation;
-
 use function Pest\Faker\fake;
 
 it(

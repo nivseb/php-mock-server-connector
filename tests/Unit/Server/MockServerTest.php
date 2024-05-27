@@ -4,7 +4,6 @@ namespace Tests\Unit\Server;
 
 use Nivseb\PhpMockServerConnector\Server\MockServer;
 use Nivseb\PhpMockServerConnector\Server\MockServerEndpoint;
-
 use function Pest\Faker\fake;
 
 it(
