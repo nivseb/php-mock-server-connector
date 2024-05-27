@@ -47,7 +47,7 @@
         ],
         "stan": "vendor/bin/phpstan analyse -c ./config/phpstan.neon",
         "insights": "vendor/bin/phpinsights --config-path=./config/phpinsights.php analyse",
-        "fix": "vendor/bin/php-cs-fixer fix --diff --config=./config/php-cs-fixer.php",
+        "format": "vendor/bin/php-cs-fixer fix --diff --config=./config/php-cs-fixer.php",
         "test": "vendor/bin/pest",
         "test:parralel": "@test --parallel",
         "test:coverage": "@test:parralel --coverage"
