@@ -2,4 +2,4 @@
 
 namespace Tests;
 
-uses(UnitTestCase::class)->in('Unit');
+uses(AbstractUnitTestCase::class)->in('Unit');

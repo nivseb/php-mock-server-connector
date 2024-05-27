@@ -9,12 +9,11 @@ use Throwable;
 class UnsuccessfulVerificationException extends AbstractMockServerException
 {
     public function __construct(
-        string                   $message,
+        string $message,
         public RemoteExpectation $expectation,
         public ResponseInterface $response,
-        ?Throwable               $previous = null
-    )
-    {
+        ?Throwable $previous = null
+    ) {
         parent::__construct($message, previous: $previous);
     }
 }

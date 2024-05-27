@@ -13,8 +13,9 @@ class MockServerEndpoint
     /** @var array<RemoteExpectation> */
     protected array $expectations = [];
 
-    public function __construct(protected string $basePath = '/')
-    {
+    public function __construct(
+        protected string $basePath = '/'
+    ) {
         MockServer::registerEndpoint($this);
     }
 

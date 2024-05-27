@@ -11,7 +11,7 @@ class MockServer
 {
     protected static string $mockServerUrl = '';
 
-    /** @var array<string, MockServerEndpoint> $endpoints */
+    /** @var array<string, MockServerEndpoint> */
     protected static array $endpoints = [];
 
     protected static ?Connector $connector = null;
@@ -23,7 +23,7 @@ class MockServer
     public static function init(string $mockServerUrl): void
     {
         static::$mockServerUrl = $mockServerUrl;
-        static::$endpoints = [];
+        static::$endpoints     = [];
         static::reset();
     }
 
@@ -79,6 +79,7 @@ class MockServer
         }
 
         static::$connector = new Connector(static::$mockServerUrl);
+
         return static::$connector;
     }
 

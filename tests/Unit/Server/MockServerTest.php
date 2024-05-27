@@ -2,15 +2,13 @@
 
 namespace Tests\Unit\Server;
 
-use Nivseb\PhpMockServerConnector\Exception\FailResetAbstractMockServerException;
-use Nivseb\PhpMockServerConnector\Exception\MissingServerInitExceptionAbstract;
 use Nivseb\PhpMockServerConnector\Server\MockServer;
 use Nivseb\PhpMockServerConnector\Server\MockServerEndpoint;
 use function Pest\Faker\fake;
 
 test(
     'auto register endpoint to the mock server container',
-    function () {
+    function (): void {
         expect(MockServer::getEndpoints())->toBeArray()->toBeEmpty();
         $endpoint = new MockServerEndpoint('/my/fake/path');
         expect(MockServer::getEndpoints())->toBe(['/my/fake/path' => $endpoint]);
@@ -19,22 +17,22 @@ test(
 
 test(
     'can access endpoint from server with path',
-    function () {
+    function (): void {
         $endpoint = new MockServerEndpoint('/my/fake/path');
-        expect(MockServer::getEndpoint('/my/fake/path'))->toBe( $endpoint);
+        expect(MockServer::getEndpoint('/my/fake/path'))->toBe($endpoint);
     }
 );
 
 test(
     'the default server url should be an empty string',
-    function() {
+    function (): void {
         expect(MockServer::getMockServerUrl())->toBe('');
     }
 );
 
 test(
-'server url is given url for init',
-    function() {
+    'server url is given url for init',
+    function (): void {
         $expectedUrl = fake()->url();
         MockServer::init($expectedUrl);
         expect(MockServer::getMockServerUrl())->toBe($expectedUrl);
@@ -43,7 +41,7 @@ test(
 
 test(
     'second init overwrite existing url',
-    function() {
+    function (): void {
         $expectedUrl = fake()->url();
         MockServer::init('https://notMy.url');
         MockServer::init($expectedUrl);

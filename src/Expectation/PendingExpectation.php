@@ -11,19 +11,29 @@ use Nivseb\PhpMockServerConnector\Structs\MockServerExpectation;
 
 class PendingExpectation
 {
-    protected MockServerEndpoint $mockServerEndpoint;
     protected MockServerExpectation $expectation;
 
     protected ?RemoteExpectation $remoteExpectation = null;
 
     public function __construct(
-        MockServerEndpoint $mockServerEndpoint,
-        string             $method,
-        string             $url
-    )
+        protected MockServerEndpoint $mockServerEndpoint,
+        string $method,
+        string $url
+    ) {
+        $this->expectation = new MockServerExpectation($method, $this->mockServerEndpoint->getBasePath().$url);
+    }
+
+    /**
+     * @throws FailCreateExpectationException
+     * @throws MissingServerInitExceptionAbstract
+     */
+    public function __destruct()
     {
-        $this->mockServerEndpoint = $mockServerEndpoint;
-        $this->expectation = new MockServerExpectation($method, $this->mockServerEndpoint->getBasePath() . $url);
+        if ($this->remoteExpectation) {
+            return;
+        }
+
+        $this->run();
     }
 
     /**
@@ -37,18 +47,19 @@ class PendingExpectation
     }
 
     /**
-     * @param array<string,string|int|float|bool> $headers
+     * @param array<string, bool|float|int|string> $headers
+     *
      * @throws AlreadyExpectedExpectationException
      */
-    public function andReturn(int $statusCode, array|string|null $responseBody = null, ?array $headers = null): static
+    public function andReturn(int $statusCode, null|array|string $responseBody = null, ?array $headers = null): static
     {
         if ($this->remoteExpectation) {
             throw new AlreadyExpectedExpectationException($this->remoteExpectation);
         }
 
         $this->expectation->responseStatusCode = $statusCode;
-        $this->expectation->responseBody = $responseBody;
-        $this->expectation->responseHeaders = $headers;
+        $this->expectation->responseBody       = $responseBody;
+        $this->expectation->responseHeaders    = $headers;
 
         return $this;
     }
@@ -63,11 +74,13 @@ class PendingExpectation
         }
 
         $this->expectation->times = $limit;
+
         return $this;
     }
 
     /**
-     * @param array<string,string|int|float|bool> $parameters
+     * @param array<string, bool|float|int|string> $parameters
+     *
      * @throws AlreadyExpectedExpectationException
      */
     public function withPathParameters(array $parameters): static
@@ -82,7 +95,8 @@ class PendingExpectation
     }
 
     /**
-     * @param array<string,string|int|float|bool> $parameters
+     * @param array<string, bool|float|int|string> $parameters
+     *
      * @throws AlreadyExpectedExpectationException
      */
     public function withQueryParameters(array $parameters): static
@@ -95,7 +109,6 @@ class PendingExpectation
 
         return $this;
     }
-
 
     /**
      * @throws AlreadyExpectedExpectationException
@@ -112,7 +125,8 @@ class PendingExpectation
     }
 
     /**
-     * @param array<string,string|int|float|bool> $headers
+     * @param array<string, bool|float|int|string> $headers
+     *
      * @throws AlreadyExpectedExpectationException
      */
     public function withHeaders(array $headers): static
@@ -124,18 +138,5 @@ class PendingExpectation
         $this->expectation->requestHeaders = $headers;
 
         return $this;
-    }
-
-    /**
-     * @throws FailCreateExpectationException
-     * @throws MissingServerInitExceptionAbstract
-     */
-    public function __destruct()
-    {
-        if ($this->remoteExpectation) {
-            return;
-        }
-
-        $this->run();
     }
 }

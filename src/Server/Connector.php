@@ -46,12 +46,13 @@ class Connector
             $response = $this->client->put(
                 '/mockserver/expectation',
                 [
-                    'json' => $this->buildMockServerExpectation($expectation)
+                    'json' => $this->buildMockServerExpectation($expectation),
                 ]
             );
             if ($response->getStatusCode() !== 201) {
                 throw new FailCreateExpectationException($expectation, $response);
             }
+
             return new RemoteExpectation(
                 json_decode($response->getBody()->getContents())[0]->id,
                 $expectation
@@ -61,13 +62,58 @@ class Connector
         }
     }
 
+    /**
+     * @throws UnsuccessfulVerificationException
+     * @throws VerificationFailException
+     */
+    public function verify(RemoteExpectation $expectation): void
+    {
+        try {
+            $response = $this->client->put(
+                '/mockserver/verify',
+                [
+                    'json' => [
+                        'expectationId' => [
+                            'id' => $expectation->uuid,
+                        ],
+                        'times' => [
+                            'atLeast' => $expectation->expectation->times,
+                            'atMost'  => $expectation->expectation->times,
+                        ],
+                    ],
+                ]
+            );
+            if ($response->getStatusCode() !== 202) {
+                throw new UnsuccessfulVerificationException(
+                    $this->getMessageFromResponse($response),
+                    $expectation,
+                    $response
+                );
+            }
+        } catch (GuzzleException $exception) {
+            if ($exception instanceof RequestException) {
+                throw new UnsuccessfulVerificationException(
+                    $this->getMessageFromResponse($exception->getResponse()),
+                    $expectation,
+                    $exception->getResponse(),
+                    $exception
+                );
+            }
+
+            throw new VerificationFailException(
+                $expectation,
+                $exception
+            );
+        }
+    }
+
     protected function buildMockServerExpectation(MockServerExpectation $expectation): array
     {
         return [
             'times' => [
                 'remainingTimes' => $expectation->times,
             ],
-            'httpRequest' => $this->buildRequestForMockServerExpectation($expectation),
+            'httpRequest'  => $this->buildRequestForMockServerExpectation($expectation),
             'httpResponse' => $this->buildResponseForMockServerExpectation($expectation),
         ];
     }
@@ -76,7 +122,7 @@ class Connector
     {
         $request = [
             'method' => $expectation->method,
-            'path' => $expectation->url,
+            'path'   => $expectation->url,
         ];
 
         if ($expectation->pathParameters) {
@@ -96,13 +142,13 @@ class Connector
     }
 
     /**
-     * @param array<string,string|int|float|bool> $properties
+     * @param array<string, bool|float|int|string> $properties
      */
     protected function buildPropertyMatcher(array $properties): array
     {
         return array_map(
-            fn(string $name, string|int|float|bool $expectedValue): array => [
-                'name' => $name,
+            fn (string $name, bool|float|int|string $expectedValue): array => [
+                'name'   => $name,
                 'values' => [$expectedValue],
             ],
             array_keys($properties),
@@ -124,53 +170,9 @@ class Connector
         return $response;
     }
 
-    /**
-     * @throws UnsuccessfulVerificationException
-     * @throws VerificationFailException
-     */
-    public function verify(RemoteExpectation $expectation): void
-    {
-        try {
-            $response = $this->client->put(
-                '/mockserver/verify',
-                [
-                    'json' => [
-                        'expectationId' => [
-                            'id' => $expectation->uuid,
-                        ],
-                        'times' => [
-                            'atLeast' => $expectation->expectation->times,
-                            'atMost' => $expectation->expectation->times,
-                        ],
-                    ]
-                ]
-            );
-            if ($response->getStatusCode() !== 202) {
-                throw new UnsuccessfulVerificationException(
-                    $this->getMessageFromResponse($response),
-                    $expectation,
-                    $response
-                );
-            }
-        } catch (GuzzleException $exception) {
-            if ($exception instanceof RequestException) {
-                throw new UnsuccessfulVerificationException(
-                    $this->getMessageFromResponse($exception->getResponse()),
-                    $expectation,
-                    $exception->getResponse(),
-                    $exception
-                );
-            }
-            throw new VerificationFailException(
-                $expectation,
-                $exception
-            );
-        }
-    }
-
     protected function getMessageFromResponse(ResponseInterface $response): string
     {
-        $result = $response->getBody()->read((int)$response->getHeaderLine('Content-Length'));
+        $result = $response->getBody()->read((int) $response->getHeaderLine('Content-Length'));
 
         $matches = [];
         if (preg_match('/^(.*), expected:<\{/', $result, $matches)) {
