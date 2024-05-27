@@ -42,7 +42,7 @@ class PendingExpectation
      */
     public function run(): void
     {
-        $this->remoteExpectation = MockServer::getConnector()->applyExpectation($this->expectation);
+        $this->remoteExpectation = MockServer::applyExpectation($this->expectation);
         $this->mockServerEndpoint->registerExpectation($this->remoteExpectation);
     }
 

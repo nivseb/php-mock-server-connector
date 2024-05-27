@@ -2,10 +2,13 @@
 
 namespace Nivseb\PhpMockServerConnector\Server;
 
+use Nivseb\PhpMockServerConnector\Exception\FailCreateExpectationException;
 use Nivseb\PhpMockServerConnector\Exception\FailResetMockServerException;
 use Nivseb\PhpMockServerConnector\Exception\MissingServerInitExceptionAbstract;
 use Nivseb\PhpMockServerConnector\Exception\UnsuccessfulVerificationException;
 use Nivseb\PhpMockServerConnector\Exception\VerificationFailException;
+use Nivseb\PhpMockServerConnector\Expectation\RemoteExpectation;
+use Nivseb\PhpMockServerConnector\Structs\MockServerExpectation;
 
 class MockServer
 {
@@ -18,7 +21,6 @@ class MockServer
 
     /**
      * @throws FailResetMockServerException
-     * @throws MissingServerInitExceptionAbstract
      */
     public static function init(string $mockServerUrl): void
     {
@@ -29,7 +31,6 @@ class MockServer
 
     /**
      * @throws FailResetMockServerException
-     * @throws MissingServerInitExceptionAbstract
      */
     public static function reset(): void
     {
@@ -37,9 +38,7 @@ class MockServer
             $endpoint->resetExpectations();
         }
 
-        if (static::$connector) {
-            static::getConnector()->reset();
-        }
+        static::$connector?->reset();
     }
 
     public static function getMockServerUrl(): string
@@ -66,6 +65,15 @@ class MockServer
     }
 
     /**
+     * @throws FailCreateExpectationException
+     * @throws MissingServerInitExceptionAbstract
+     */
+    public static function applyExpectation(MockServerExpectation $expectation): RemoteExpectation
+    {
+        return static::getConnector()->applyExpectation($expectation);
+    }
+
+    /**
      * @throws MissingServerInitExceptionAbstract
      */
     public static function getConnector(): Connector
@@ -85,13 +93,16 @@ class MockServer
 
     /**
      * @throws UnsuccessfulVerificationException
-     * @throws MissingServerInitExceptionAbstract
      * @throws VerificationFailException
      */
     public static function verify(): void
     {
+        if (!static::$connector) {
+            return;
+        }
+
         foreach (static::$endpoints as $endpoint) {
-            $endpoint->verify();
+            $endpoint->verify(static::$connector);
         }
     }
 
@@ -99,7 +110,6 @@ class MockServer
      * @throws UnsuccessfulVerificationException
      * @throws FailResetMockServerException
      * @throws VerificationFailException
-     * @throws MissingServerInitExceptionAbstract
      */
     public static function close(): void
     {

@@ -2,7 +2,6 @@
 
 namespace Nivseb\PhpMockServerConnector\Server;
 
-use Nivseb\PhpMockServerConnector\Exception\MissingServerInitExceptionAbstract;
 use Nivseb\PhpMockServerConnector\Exception\UnsuccessfulVerificationException;
 use Nivseb\PhpMockServerConnector\Exception\VerificationFailException;
 use Nivseb\PhpMockServerConnector\Expectation\PendingExpectation;
@@ -46,12 +45,10 @@ class MockServerEndpoint
 
     /**
      * @throws UnsuccessfulVerificationException
-     * @throws MissingServerInitExceptionAbstract
      * @throws VerificationFailException
      */
-    public function verify(): void
+    public function verify(Connector $connector): void
     {
-        $connector = MockServer::getConnector();
         foreach ($this->expectations as $expectation) {
             $connector->verify($expectation);
         }
