@@ -207,11 +207,5 @@ Here you have an example for a full functional PHPUnit test case.
             self::assertEquals(200, $response->getStatusCode());
             self::assertEquals('{"data":"This is a JSON test content."}',$response->getBody()->getContents());
         }
-
-        protected function tearDown(): void
-        {
-            $this->closeMockServer();
-            parent::tearDown();
-        }
     }
 ```
