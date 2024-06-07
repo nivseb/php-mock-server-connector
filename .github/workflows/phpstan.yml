@@ -31,5 +31,5 @@ jobs:
                     dependency-versions: "${{ matrix.dependencies }}"
                     composer-options: "${{ matrix.composer-options }}"
             -   name: Run PHPStan
-                run: ./vendor/bin/phpstan --error-format=github -c ./config/phpstan.neon
+                run: ./vendor/bin/phpstan analyse --error-format=github -c ./config/phpstan.neon
 
