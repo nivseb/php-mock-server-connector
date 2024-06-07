@@ -8,5 +8,7 @@ parameters:
 	excludePaths:
 		- ./
 	reportUnmatchedIgnoredErrors: true
-	checkMissingIterableValueType: false
-	checkGenericClassInNonGenericObjectType: false
+	ignoreErrors:
+	    - identifier: missingType.iterableValue
+	    - messages:
+	      - '#Parameter \#1 \$exception of method Pest\\Mixins\\Expectation\<\(Closure\)\|null\>::toThrow\(\) expects \(Closure\(Throwable\)\: mixed\)\|string\|Throwable, Closure\(Nivseb\\PhpMockServerConnector\\Exception\\[A-Za-z]+\): void given.#'

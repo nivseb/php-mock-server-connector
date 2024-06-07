@@ -1,8 +1,12 @@
-name: Tests
+name: PHPStan
 
 on:
-    - pull_request
-    - push
+    push:
+        paths:
+            - 'src/**.php'
+            - 'tests/**.php'
+            - 'config/phpstan.neon'
+            - '.github/workflows/phpstan.yml'
 
 jobs:
     test:
@@ -26,5 +30,6 @@ jobs:
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
                     composer-options: "${{ matrix.composer-options }}"
-            -   name: Tests
-                run: ./vendor/bin/pest --coverage --parallel
+            -   name: Run PHPStan
+                run: ./vendor/bin/phpstan --error-format=github -c ./config/phpstan.neon
+

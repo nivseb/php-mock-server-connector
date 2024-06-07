@@ -16,11 +16,16 @@ use Psr\Http\Message\ResponseInterface;
 
 class Connector
 {
-    protected ?Client $client;
+    protected Client $client;
 
     public function __construct(string $mockServerUrl)
     {
-        $this->client = new Client(['base_uri' => $mockServerUrl]);
+        $this->client = $this->buildClient($mockServerUrl);
+    }
+
+    protected function buildClient(string $mockServerUrl): Client
+    {
+        return new Client(['base_uri' => $mockServerUrl]);
     }
 
     /**
@@ -79,7 +84,7 @@ class Connector
                         ],
                         'times' => [
                             'atLeast' => $expectation->expectation->times,
-                            'atMost'  => $expectation->expectation->times,
+                            'atMost' => $expectation->expectation->times,
                         ],
                     ],
                 ]
@@ -92,25 +97,27 @@ class Connector
                 );
             }
         } catch (GuzzleException $exception) {
-            if ($exception instanceof RequestException) {
-                throw new UnsuccessfulVerificationException(
-                    $this->getMessageFromResponse($exception->getResponse()),
-                    $expectation,
-                    $exception->getResponse(),
-                    $exception
-                );
+            if (!$exception instanceof RequestException) {
+                throw new VerificationFailException($expectation, $exception);
             }
 
-            throw new VerificationFailException(
+            $response = $exception->getResponse();
+            if (!$response) {
+                throw new VerificationFailException($expectation, $exception);
+            }
+            throw new UnsuccessfulVerificationException(
+                $this->getMessageFromResponse($response),
                 $expectation,
+                $response,
                 $exception
             );
+
         }
     }
 
     protected function getMessageFromResponse(ResponseInterface $response): string
     {
-        $result = $response->getBody()->read((int) $response->getHeaderLine('Content-Length'));
+        $result = $response->getBody()->read((int)$response->getHeaderLine('Content-Length'));
 
         $matches = [];
         if (preg_match('/^(.*), expected:<\{/', $result, $matches)) {

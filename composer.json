@@ -46,7 +46,7 @@
             "@insights"
         ],
         "stan": "vendor/bin/phpstan analyse -c ./config/phpstan.neon",
-        "insights": "vendor/bin/phpinsights --config-path=./config/phpinsights.php analyse",
+        "insights": "vendor/bin/phpinsights --config-path=./config/phpinsights.php analyse -s",
         "format": "vendor/bin/php-cs-fixer fix --diff --config=./config/php-cs-fixer.php",
         "test": "vendor/bin/pest",
         "test:parralel": "@test --parallel",
