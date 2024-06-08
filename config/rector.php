@@ -41,5 +41,4 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictBoolReturnExprRector::class);
     $rectorConfig->rule(Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector::class);
     $rectorConfig->rule(Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedPropertyRector::class);
-
 };

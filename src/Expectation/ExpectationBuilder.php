@@ -1,11 +1,14 @@
 <?php
 
-namespace Nivseb\PhpMockServerConnector\Expectation; use Nivseb\PhpMockServerConnector\Structs\MockServerExpectation;
+namespace Nivseb\PhpMockServerConnector\Expectation;
+
+use Nivseb\PhpMockServerConnector\Structs\MockServerExpectation;
 
 class ExpectationBuilder
 {
     public static function buildMockServerExpectation(MockServerExpectation $expectation): array
-    {return [
+    {
+        return [
             'times' => [
                 'remainingTimes' => $expectation->times,
             ],
@@ -40,7 +43,8 @@ class ExpectationBuilder
     /**
      * @param array<string, bool|float|int|string> $properties
      */
-    protected static function buildPropertyMatcher(array $properties): array    {
+    protected static function buildPropertyMatcher(array $properties): array
+    {
         return array_map(
             fn (string $name, bool|float|int|string $expectedValue): array => [
                 'name'   => $name,

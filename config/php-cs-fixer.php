@@ -3,7 +3,7 @@
 $finder = PhpCsFixer\Finder::create()
     ->ignoreDotFiles(true)
     ->ignoreVCSIgnored(true)
-    ->in(__DIR__);
+    ->in(['./src','./tests']);
 
 return (new PhpCsFixer\Config())
     ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
@@ -69,6 +69,7 @@ return (new PhpCsFixer\Config())
             'self_accessor'                          => false,
             'no_unneeded_final_method'               => true,
             'no_unset_on_property'                   => true,
+            'cast_spaces'                            => true,
         ]
     )
     ->setFinder($finder);

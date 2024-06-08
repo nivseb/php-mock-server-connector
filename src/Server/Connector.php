@@ -23,11 +23,6 @@ class Connector
         $this->client = $this->buildClient($mockServerUrl);
     }
 
-    protected function buildClient(string $mockServerUrl): Client
-    {
-        return new Client(['base_uri' => $mockServerUrl]);
-    }
-
     /**
      * @throws FailResetMockServerException
      */
@@ -84,7 +79,7 @@ class Connector
                         ],
                         'times' => [
                             'atLeast' => $expectation->expectation->times,
-                            'atMost' => $expectation->expectation->times,
+                            'atMost'  => $expectation->expectation->times,
                         ],
                     ],
                 ]
@@ -105,19 +100,24 @@ class Connector
             if (!$response) {
                 throw new VerificationFailException($expectation, $exception);
             }
+
             throw new UnsuccessfulVerificationException(
                 $this->getMessageFromResponse($response),
                 $expectation,
                 $response,
                 $exception
             );
-
         }
+    }
+
+    protected function buildClient(string $mockServerUrl): Client
+    {
+        return new Client(['base_uri' => $mockServerUrl]);
     }
 
     protected function getMessageFromResponse(ResponseInterface $response): string
     {
-        $result = $response->getBody()->read((int)$response->getHeaderLine('Content-Length'));
+        $result = $response->getBody()->read((int) $response->getHeaderLine('Content-Length'));
 
         $matches = [];
         if (preg_match('/^(.*), expected:<\{/', $result, $matches)) {
