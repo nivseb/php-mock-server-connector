@@ -1,14 +1,20 @@
 name: Tests
 
 on:
-    - pull_request
-    - push
+    push:
+        branches:
+            - main
+            - '*.x'
+    pull_request:
+    schedule:
+        - cron: '0 5 * * *'
 
 jobs:
     test:
-        name: "Tests with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
+        name: "Testing with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
         runs-on: ubuntu-latest
         strategy:
+            fail-fast: true
             matrix:
                 php:
                     - "8.1"
@@ -25,6 +31,5 @@ jobs:
             -   uses: "ramsey/composer-install@v3"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
-                    composer-options: "${{ matrix.composer-options }}"
             -   name: Tests
                 run: ./vendor/bin/pest --coverage --parallel

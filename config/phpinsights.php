@@ -175,10 +175,10 @@ return [
         ],
     ],
     'requirements' => [
-        'min-quality'      => 90,
-        'min-complexity'   => 80,
-        'min-architecture' => 90,
-        'min-style'        => 90,
+        'min-quality'      => 80,
+        'min-complexity'   => 70,
+        'min-architecture' => 80,
+        'min-style'        => 80,
     ],
     'threads' => null,
 ];

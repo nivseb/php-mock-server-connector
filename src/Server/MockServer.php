@@ -81,11 +81,9 @@ class MockServer
         if (!static::$mockServerUrl) {
             throw new MissingServerInitExceptionAbstract();
         }
-
         if (static::$connector) {
             return static::$connector;
         }
-
         static::$connector = new Connector(static::$mockServerUrl);
 
         return static::$connector;
