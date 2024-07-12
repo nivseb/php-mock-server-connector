@@ -53,6 +53,7 @@
         "insights": "vendor/bin/phpinsights --no-interaction --config-path=./config/phpinsights.php analyse",
         "rector": "vendor/bin/rector process -c ./config/rector.php",
         "format": "vendor/bin/php-cs-fixer fix --diff --config=./config/php-cs-fixer.php",
+        "format:check": "vendor/bin/php-cs-fixer check --config=./config/php-cs-fixer.php",
         "test": "vendor/bin/pest",
         "test:parralel": "@test --parallel",
         "test:coverage": "@test:parralel --coverage"
