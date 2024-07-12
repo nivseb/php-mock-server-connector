@@ -11,7 +11,7 @@ on:
 
 jobs:
     static-analysis:
-        name: "Run PHPStan with P${{ matrix.php }} and ${{ matrix.dependencies }}"
+        name: "Rund static analysis with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
         runs-on: ubuntu-latest
         strategy:
             fail-fast: true
@@ -35,7 +35,7 @@ jobs:
                 run: ./vendor/bin/phpstan analyse --error-format=github --configuration="./config/phpstan.neon"
 
     format:
-        name: "Run PHP-CS-Fixer with P$BASE_PHP_VERSION and $BASE_DEPENDENCIES dependencies"
+        name: "Check format with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
         runs-on: ubuntu-latest
         strategy:
             fail-fast: true
@@ -48,9 +48,9 @@ jobs:
             -   uses: "actions/checkout@v4"
             -   uses: "shivammathur/setup-php@v2"
                 with:
-                    php-version: "$BASE_PHP_VERSION"
+                    php-version: "${{ matrix.php }}"
             -   uses: "ramsey/composer-install@v3"
                 with:
-                    dependency-versions: "$BASE_DEPENDENCIES"
+                    dependency-versions: "${{ matrix.dependencies }}"
             -   name: Run PHP-CS-Fixer
                 run: ./vendor/bin/php-cs-fixer check --config="./config/php-cs-fixer.php"

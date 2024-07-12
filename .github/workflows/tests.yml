@@ -11,7 +11,7 @@ on:
 
 jobs:
     test:
-        name: "Tests with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
+        name: "Testing with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
         runs-on: ubuntu-latest
         strategy:
             fail-fast: true
