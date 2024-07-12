@@ -1,14 +1,20 @@
 name: Tests
 
 on:
-    - pull_request
-    - push
+    push:
+        branches:
+            - main
+            - '*.x'
+    pull_request:
+    schedule:
+        - cron: '0 5 * * *'
 
 jobs:
     test:
         name: "Tests with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
         runs-on: ubuntu-latest
         strategy:
+            fail-fast: true
             matrix:
                 php:
                     - "8.1"
