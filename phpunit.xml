@@ -20,9 +20,9 @@
     </testsuites>
     <coverage>
         <report>
-            <html outputDirectory="tests/test_results/coverage"/>
-            <php outputFile="tests/test_results/coverage-integration.cov"/>
-            <text outputFile="tests/test_results/coverage-integration.txt"/>
+            <clover outputFile="tests/test_results/clover.xml"/>
+            <cobertura outputFile="tests/test_results/cobertura.xml"/>
+            <text outputFile="tests/test_results/coverage.txt"/>
         </report>
     </coverage>
 </phpunit>
