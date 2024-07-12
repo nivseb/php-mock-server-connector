@@ -31,31 +31,26 @@ jobs:
             -   uses: "ramsey/composer-install@v3"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
-                    composer-options: "${{ matrix.composer-options }}"
             -   name: Run PHPStan
                 run: ./vendor/bin/phpstan analyse --error-format=github --configuration="./config/phpstan.neon"
 
     format:
-        name: "Run PHP-CS-Fixer with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
+        name: "Run PHP-CS-Fixer with P$BASE_PHP_VERSION and $BASE_DEPENDENCIES dependencies"
         runs-on: ubuntu-latest
         strategy:
             fail-fast: true
             matrix:
                 php:
-                    - "8.1"
-                    - "8.2"
                     - "8.3"
                 dependencies:
-                    - "lowest"
                     - "highest"
         steps:
             -   uses: "actions/checkout@v4"
             -   uses: "shivammathur/setup-php@v2"
                 with:
-                    php-version: "${{ matrix.php }}"
+                    php-version: "$BASE_PHP_VERSION"
             -   uses: "ramsey/composer-install@v3"
                 with:
-                    dependency-versions: "${{ matrix.dependencies }}"
-                    composer-options: "${{ matrix.composer-options }}"
+                    dependency-versions: "$BASE_DEPENDENCIES"
             -   name: Run PHP-CS-Fixer
                 run: ./vendor/bin/php-cs-fixer check --config="./config/php-cs-fixer.php"

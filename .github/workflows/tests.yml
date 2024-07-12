@@ -31,6 +31,5 @@ jobs:
             -   uses: "ramsey/composer-install@v3"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
-                    composer-options: "${{ matrix.composer-options }}"
             -   name: Tests
                 run: ./vendor/bin/pest --coverage --parallel
