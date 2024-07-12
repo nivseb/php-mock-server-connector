@@ -34,6 +34,27 @@ jobs:
             -   name: Run PHPStan
                 run: ./vendor/bin/phpstan analyse --error-format=github --configuration="./config/phpstan.neon"
 
+    insights:
+        name: "Check insights with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: true
+            matrix:
+                php:
+                    - "8.3"
+                dependencies:
+                    - "highest"
+        steps:
+            -   uses: "actions/checkout@v4"
+            -   uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "${{ matrix.php }}"
+            -   uses: "ramsey/composer-install@v3"
+                with:
+                    dependency-versions: "${{ matrix.dependencies }}"
+            -   name: Run PHPInsights
+                run: ./vendor/bin/phpinsights --no-interaction --config-path="./config/phpinsights.php" analyse
+
     format:
         name: "Check format with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
         runs-on: ubuntu-latest
