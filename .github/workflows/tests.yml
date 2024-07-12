@@ -28,8 +28,18 @@ jobs:
             -   uses: "shivammathur/setup-php@v2"
                 with:
                     php-version: "${{ matrix.php }}"
+                    coverage: xdebug
             -   uses: "ramsey/composer-install@v3"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
             -   name: Tests
                 run: ./vendor/bin/pest --coverage --parallel
+            -   name: 'Upload Artifact'
+                uses: actions/upload-artifact@v4
+                with:
+                    name: "coverage-reports-${{ matrix.php }}-${{ matrix.dependencies }}"
+                    path: |
+                        tests/test_results/clover.xml
+                        tests/test_results/cobertura.xml
+                        tests/test_results/coverage.txt
+                    retention-days: 2
