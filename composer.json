@@ -45,7 +45,11 @@
             "@stan",
             "@insights"
         ],
-        "stan": "vendor/bin/phpstan analyse -c ./config/phpstan.neon",
+        "analyse": [
+            "@phpstan",
+            "@insights"
+        ],
+        "phpstan": "vendor/bin/phpstan analyse -c ./config/phpstan.neon",
         "insights": "vendor/bin/phpinsights --no-interaction --config-path=./config/phpinsights.php analyse",
         "rector": "vendor/bin/rector process -c ./config/rector.php",
         "format": "vendor/bin/php-cs-fixer fix --diff --config=./config/php-cs-fixer.php",
@@ -62,7 +66,7 @@
         "mockery/mockery": "^1.6",
         "phpstan/phpstan": "^1.11",
         "nunomaduro/phpinsights": "^2.11",
-        "rector/rector" : "^1.1"
+        "rector/rector": "^1.1"
     },
     "config": {
         "sort-packages": true,

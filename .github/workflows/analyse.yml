@@ -1,4 +1,4 @@
-name: PHPStan
+name: Analyse
 
 on:
     push:
@@ -9,7 +9,7 @@ on:
             - '.github/workflows/phpstan.yml'
 
 jobs:
-    test:
+    phpstan:
         name: "Tests with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
         runs-on: ubuntu-latest
         strategy:
