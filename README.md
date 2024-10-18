@@ -1,6 +1,6 @@
 # PHP Mock Server Connector
 
-[![Tests](https://img.shields.io/github/actions/workflow/status/nivseb/php-mock-server-connector/tests.yml?branch=main&label=Tests)](https://github.com/nivseb/php-mock-server-connector/actions/workflows/tests.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/nivseb/php-mock-server-connector/test.yml?branch=main&label=Tests)](https://github.com/nivseb/php-mock-server-connector/actions/workflows/tests.yml)
 [![Supported PHP Version](https://badgen.net/packagist/php/nivseb/php-mock-server-connector?color=8892bf)](https://www.php.net/supported-versions)
 [![Latest Stable Version](https://poser.pugx.org/nivseb/php-mock-server-connector/v/stable.svg)](https://packagist.org/packages/nivseb/php-mock-server-connector)
 [![Total Downloads](https://poser.pugx.org/nivseb/php-mock-server-connector/downloads.svg)](https://packagist.org/packages/nivseb/php-mock-server-connector)
