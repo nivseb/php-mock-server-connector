@@ -141,7 +141,7 @@ A request body can be expected with a call of the `withBody` method. The Body ca
     use GuzzleHttp\Client;
     
     $mockServer = new MockServerEndpoint('/test');
-    $mockServer->allows('GET', '/')->withBody(['data' => 'This is a JSON test content.']);
+    $mockServer->allows('POST', '/')->withBody(['data' => 'This is a JSON test content.']);
 ```
 
 ### Multiple calls
