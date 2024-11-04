@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/nivseb/php-mock-server-connector/compare/v1.1.0...v1.1.1) (2024-11-04)
+
+
+### Bug Fixes
+
+* **doc:** ([#10](https://github.com/nivseb/php-mock-server-connector/issues/10)) ([d3f58cc](https://github.com/nivseb/php-mock-server-connector/commit/d3f58cc4a9fc0b62270c948730add28916966888))
+
 ## [1.1.0](https://github.com/nivseb/php-mock-server-connector/compare/v1.0.0...v1.1.0) (2024-10-18)
 
 
