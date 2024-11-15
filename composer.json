@@ -43,7 +43,7 @@
     "scripts": {
         "check": [
             "@composer validate",
-            "@stan",
+            "@phpstan",
             "@insights"
         ],
         "analyse": [
