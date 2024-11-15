@@ -60,15 +60,14 @@
         "test:coverage": "@test:parralel --coverage"
     },
     "require-dev": {
-        "pestphp/pest": "^2.34",
-        "phpunit/phpunit": "^10.5",
-        "pestphp/pest-plugin-faker": "^2",
-        "friendsofphp/php-cs-fixer": "^3.57",
-        "kubawerlos/php-cs-fixer-custom-fixers": "^3.21",
+        "pestphp/pest": "^2.36",
+        "pestphp/pest-plugin-faker": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "kubawerlos/php-cs-fixer-custom-fixers": "^3.22",
         "mockery/mockery": "^1.6",
-        "phpstan/phpstan": "^1.11",
-        "nunomaduro/phpinsights": "^2.11",
-        "rector/rector": "^1.1"
+        "phpstan/phpstan": "^1.12",
+        "nunomaduro/phpinsights": "^2.12",
+        "rector/rector": "^1.2"
     },
     "config": {
         "sort-packages": true,
