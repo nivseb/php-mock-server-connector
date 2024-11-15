@@ -1,6 +1,5 @@
 {
     "name": "nivseb/php-mock-server-connector",
-    "version": "1.1.0",
     "description": "Small tool to use mock-server/mockserver in a easy way from php based tests.",
     "type": "library",
     "keywords": [
