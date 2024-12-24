@@ -36,6 +36,7 @@ use PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP\CommentedOutCodeSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP\NonExecutableCodeSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ScopeClosingBraceSniff;
 use PhpCsFixer\Fixer\Basic\BracesFixer;
+use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer;
 use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer;
@@ -96,7 +97,7 @@ return [
         ],
     ],
     'remove' => [
-        PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer::class,
+        ClassDefinitionFixer::class,
         PropertyDeclarationSniff::class,
         BracesFixer::class,
         NoSpacesInsideParenthesisFixer::class.
@@ -145,7 +146,7 @@ return [
             'maxLinesLength' => 40,
         ],
         NestingLevelSniff::class => [
-            'nestingLevel'         => 2,
+            'nestingLevel'         => 3,
             'absoluteNestingLevel' => 5,
         ],
         LineLengthSniff::class => [
