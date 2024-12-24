@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/nivseb/php-mock-server-connector/compare/v1.1.1...v1.2.0) (2024-12-24)
+
+
+### Features
+
+* **main:** add support for php 8.4 ([93fdc15](https://github.com/nivseb/php-mock-server-connector/commit/93fdc1581d6c5b457d9c1a969c563610dcf15e4a))
+
+
+### Bug Fixes
+
+* **dev:** update config for dev tools and dev scripts ([64eb629](https://github.com/nivseb/php-mock-server-connector/commit/64eb6293f5527f17a563c15973ad6bef82e667cb))
+
 ## [1.1.1](https://github.com/nivseb/php-mock-server-connector/compare/v1.1.0...v1.1.1) (2024-11-15)
 
 
