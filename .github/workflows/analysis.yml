@@ -85,4 +85,6 @@ jobs:
             -   uses: DavidAnson/markdownlint-cli2-action@v19
                 with:
                     config: 'dev/config/.markdownlint-cli2.jsonc'
-                    globs: "**/*.md"
+                    globs: |
+                        **/*.md
+                        !CHANGELOG.md
