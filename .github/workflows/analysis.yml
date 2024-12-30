@@ -84,7 +84,7 @@ jobs:
             -   uses: "actions/checkout@v4"
             -   uses: DavidAnson/markdownlint-cli2-action@v19
                 with:
-                    config: 'dev/config/.markdownlint-cli2.jsonc'
+                    config: 'dev/config/.markdownlint.jsonc'
                     globs: |
                         **/*.md
                         !CHANGELOG.md
