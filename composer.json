@@ -36,7 +36,7 @@
         }
     },
     "require": {
-        "php": ">=8.1",
+        "php": "^8.1",
         "guzzlehttp/guzzle": "^7.8"
     },
     "scripts": {
@@ -45,18 +45,34 @@
             "@phpstan",
             "@insights"
         ],
+        "check-dev": [
+            "@composer validate",
+            "@phpstan-dev",
+            "@insights-dev"
+        ],
         "analyse": [
             "@phpstan",
             "@insights"
         ],
-        "phpstan": "vendor/bin/phpstan analyse -c ./config/phpstan.neon",
-        "insights": "vendor/bin/phpinsights --no-interaction --config-path=./config/phpinsights.php analyse",
-        "rector": "vendor/bin/rector process -c ./config/rector.php",
-        "format": "vendor/bin/php-cs-fixer fix --diff --config=./config/php-cs-fixer.php",
-        "format:check": "vendor/bin/php-cs-fixer check --config=./config/php-cs-fixer.php",
-        "test": "vendor/bin/pest",
-        "test:parralel": "@test --parallel",
-        "test:coverage": "@test:parralel --coverage"
+        "analyse-dev": [
+            "@phpstan-dev",
+            "@insights-dev"
+        ],
+        "uniform": [
+            "@rector",
+            "@format"
+        ],
+        "phpstan": "vendor/bin/phpstan analyse -c ./dev/config/phpstan.neon",
+        "phpstan-dev": "vendor/bin/phpstan analyse -c ./dev/config/phpstan-dev.neon",
+        "insights-dev": "vendor/bin/phpinsights --no-interaction -vvv --config-path=./dev/config/phpinsights.php analyse src tests",
+        "insights": "vendor/bin/phpinsights --no-interaction -vvv --config-path=./dev/config/phpinsights.php analyse src",
+        "rector": "vendor/bin/rector process -c ./dev/config/rector.php",
+        "format": "vendor/bin/php-cs-fixer fix --diff --config=./dev/config/php-cs-fixer.php",
+        "format:check": "vendor/bin/php-cs-fixer check --config=./dev/config/php-cs-fixer.php",
+        "test": "vendor/bin/pest --cache-directory=tests/.cache",
+        "test:parallel": "@test --parallel",
+        "test:coverage:line": "XDEBUG_MODE=coverage vendor/bin/pest --cache-directory=tests/test_results/.cache --coverage",
+        "test:coverage:path": "XDEBUG_MODE=coverage vendor/bin/pest --cache-directory=tests/test_results/.cache --coverage --path-coverage"
     },
     "require-dev": {
         "pestphp/pest": "^2.36",
