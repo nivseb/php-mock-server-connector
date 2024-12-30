@@ -76,3 +76,15 @@ jobs:
                     dependency-versions: "${{ matrix.dependencies }}"
             -   name: Run PHP-CS-Fixer
                 run: ./vendor/bin/php-cs-fixer check --config="./dev/config/php-cs-fixer.php"
+
+    markdown:
+        name: "Lint markdown files"
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: "actions/checkout@v4"
+            -   uses: DavidAnson/markdownlint-cli2-action@v19
+                with:
+                    config: 'dev/config/.markdownlint.jsonc'
+                    globs: |
+                        **/*.md
+                        !CHANGELOG.md

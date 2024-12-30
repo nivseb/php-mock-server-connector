@@ -1,4 +1,5 @@
-# PHP Mock Server Connector
+PHP Mock Server Connector
+=========================
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/nivseb/php-mock-server-connector/test.yml?branch=main&label=Tests)](https://github.com/nivseb/php-mock-server-connector/actions/workflows/tests.yml)
 [![Supported PHP Version](https://badgen.net/packagist/php/nivseb/php-mock-server-connector?color=8892bf)](https://www.php.net/supported-versions)
@@ -6,25 +7,30 @@
 [![Total Downloads](https://poser.pugx.org/nivseb/php-mock-server-connector/downloads.svg)](https://packagist.org/packages/nivseb/php-mock-server-connector)
 
 PHP Mock Server Connector is a tool that make it easy to use the [MockServer](https://www.mock-server.com) in php based tests.
-The method of utilisation is based on the [Mockery](https://github.com/mockery/mockery) project. The creation of 
+The method of utilisation is based on the [Mockery](https://github.com/mockery/mockery) project. The creation of
 Expectations is therefore very similar.
 
-### Installation
+Installation
+------------
 
 1. To install PHP Mock Server Connector you can easily use composer.
+
     ```sh
     composer require --dev nivseb/php-mock-server-connector
     ```
+
 2. You need a running instance of the [MockServer](https://www.mock-server.com/mock_server/getting_started.html#start_mockserver).
 3. Existing test setup for php based test. For example a setup with [PHPUnit](https://phpunit.de).
 
-## Usage
+Usage
+-----
 
 ### Setup in your tests
 
-After the installation, you can start to use the connector in your tests. The first step is now to connect to the [MockServer instance](https://www.mock-server.com),
-for that add the following code to your test. This can be done in a single test case or in another setup part for
-your tests (like the setUp Method in PHPUnit tests). But this need the first step that is executed.
+After the installation, you can start to use the connector in your tests. The first step is now to connect
+to the [MockServer instance](https://www.mock-server.com), for that add the following code to your test.
+This can be done in a single test case or in another setup part for your tests (like the setUp Method in PHPUnit tests).
+But this need the first step that is executed.
 
 ```php
     use Nivseb\PhpMockServerConnector\Server;
@@ -91,15 +97,16 @@ the `run` method.
 
 The expectation will be verified on the close call for the mock server, see for that [Setup in your tests](#setup-in-your-tests).
 
-## Supported request expectations 
+Supported request expectations
+------------------------------
 
 ### methods and uri
 
 You can create expectations for methods and paths in all combinations that are possible with the [MockServer](https://www.mock-server.com).
 
 #### Parameters
- 
-To add a check for parameters to your expectations, you can call the method `withPathParameters` or `withQueryParameters`. 
+
+To add a check for parameters to your expectations, you can call the method `withPathParameters` or `withQueryParameters`.
 
 ```php
     use Nivseb\PhpMockServerConnector\PhpUnit\UseMockServer;
@@ -132,7 +139,7 @@ You can add expected headers in the request by calling the withHeaders method on
 
 ### Body
 
-A request body can be expected with a call of the `withBody` method. The Body can be sent as array or string. 
+A request body can be expected with a call of the `withBody` method. The Body can be sent as array or string.
 
 ```php
     use Nivseb\PhpMockServerConnector\PhpUnit\UseMockServer;
@@ -148,10 +155,11 @@ A request body can be expected with a call of the `withBody` method. The Body ca
 
 With the `times` method you can define that a request should be executed multiple times.
 
-## Response
+Response
+--------
 
 The response for an expectation can be defined in with the `andReturn` method. For the response you can define
-the status code, body and headers. 
+the status code, body and headers.
 
 ```php
     use Nivseb\PhpMockServerConnector\PhpUnit\UseMockServer;
@@ -163,7 +171,8 @@ the status code, body and headers.
     $mockServer->allows('GET', '/')->andReturn(200, ['data' => 'This is a JSON test content.']);
 ```
 
-## Defaults
+Defaults
+--------
 
 Every expectation comes with some default values. This example will define, that the request is executed one time and
 return an empty response with the status code 200.
@@ -178,9 +187,10 @@ return an empty response with the status code 200.
     $mockServer->allows('GET', '/');
 ```
 
-## Example
+Example
+-------
 
-Here you have an example for a full functional PHPUnit test case. 
+Here you have an example for a full functional PHPUnit test case.
 
 ```php
     use Nivseb\PhpMockServerConnector\PhpUnit\UseMockServer;
