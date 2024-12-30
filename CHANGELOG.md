@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/nivseb/php-mock-server-connector/compare/v1.2.0...v1.3.0) (2024-12-30)
+
+
+### Features
+
+* **dev:** format and linting markdown files ([c10cb19](https://github.com/nivseb/php-mock-server-connector/commit/c10cb19eef674e92683b8ed88373e6b034e631ee))
+
 ## [1.2.0](https://github.com/nivseb/php-mock-server-connector/compare/v1.1.1...v1.2.0) (2024-12-24)
 
 ### Features
