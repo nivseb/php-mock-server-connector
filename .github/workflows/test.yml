@@ -11,28 +11,26 @@ on:
 
 jobs:
     test:
-        name: "Testing with P${{ matrix.php }} and ${{ matrix.dependencies }} dependencies"
+        name: "Testing with P${{ matrix.php }} and ${{ matrix.dependency-version }} dependencies"
         runs-on: ubuntu-latest
         strategy:
             fail-fast: true
             matrix:
                 php:
-                    - "8.1"
                     - "8.2"
                     - "8.3"
                     - "8.4"
-                dependencies:
-                    - "lowest"
-                    - "highest"
+                dependency-version:
+                    - "prefer-lowest"
+                    - "prefer-stable"
         steps:
             -   uses: "actions/checkout@v4"
             -   uses: "shivammathur/setup-php@v2"
                 with:
                     php-version: "${{ matrix.php }}"
                     coverage: xdebug
-            -   uses: "ramsey/composer-install@v3"
-                with:
-                    dependency-versions: "${{ matrix.dependencies }}"
+            -   name: Install dependencies
+                run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
             -   name: Tests
                 run: ./vendor/bin/pest --coverage --parallel
             -   name: 'Upload Artifact'
