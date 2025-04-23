@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.0](https://github.com/nivseb/php-mock-server-connector/compare/v1.2.0...v2.0.0) (2025-04-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **remove 8.1 support:** No more support for php 8.1
+
+### Features
+
+* **dev:** format and linting markdown files ([c10cb19](https://github.com/nivseb/php-mock-server-connector/commit/c10cb19eef674e92683b8ed88373e6b034e631ee))
+* **remove 8.1 support:** ([#21](https://github.com/nivseb/php-mock-server-connector/issues/21)) ([e6936ee](https://github.com/nivseb/php-mock-server-connector/commit/e6936ee2fc071436574a26a83036f35b34e3eaad))
+
+
+### Bug Fixes
+
+* **correct dev tools:** ([#22](https://github.com/nivseb/php-mock-server-connector/issues/22)) ([432dff4](https://github.com/nivseb/php-mock-server-connector/commit/432dff41d3d32229bf5a49142a430e5f160c28a8))
+
 ## [1.2.0](https://github.com/nivseb/php-mock-server-connector/compare/v1.1.1...v1.2.0) (2024-12-24)
 
 ### Features
