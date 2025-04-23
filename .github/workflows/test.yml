@@ -36,7 +36,7 @@ jobs:
             -   name: 'Upload Artifact'
                 uses: actions/upload-artifact@v4
                 with:
-                    name: "coverage-reports-${{ matrix.php }}-${{ matrix.dependencies }}"
+                    name: "coverage-reports-${{ matrix.php }}-${{ matrix.dependency-version }}"
                     path: |
                         tests/test_results/clover.xml
                         tests/test_results/cobertura.xml
