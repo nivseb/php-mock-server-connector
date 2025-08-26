@@ -41,12 +41,12 @@ class ExpectationBuilder
     }
 
     /**
-     * @param array<string, bool|float|int|string> $properties
+     * @param array<string, array|bool|float|int|string> $properties
      */
     protected static function buildPropertyMatcher(array $properties): array
     {
         return array_map(
-            fn (string $name, bool|float|int|string $expectedValue): array => [
+            fn (string $name, array|bool|float|int|string $expectedValue): array => [
                 'name'   => $name,
                 'values' => [$expectedValue],
             ],
