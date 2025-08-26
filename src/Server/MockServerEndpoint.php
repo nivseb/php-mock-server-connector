@@ -28,6 +28,14 @@ class MockServerEndpoint
         $this->expectations[$expectation->uuid] = $expectation;
     }
 
+    /**
+     * @return array<string, MockServerEndpoint>
+     */
+    public function getExpectations(): array
+    {
+        return $this->expectations;
+    }
+
     public function getExpectation(string $uuid): ?RemoteExpectation
     {
         return $this->expectations[$uuid] ?? null;

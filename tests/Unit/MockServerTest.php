@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Nivseb\PhpMockServerConnector\Exception\FailResetMockServerException;
 use Nivseb\PhpMockServerConnector\Server\MockServer;
 use Nivseb\PhpMockServerConnector\Server\MockServerEndpoint;
 
@@ -33,6 +34,9 @@ it(
 
 it(
     'server url is given url for init',
+    /**
+     * @throws FailResetMockServerException
+     */
     function (): void {
         $expectedUrl = fake()->url();
         MockServer::init($expectedUrl);
@@ -42,10 +46,45 @@ it(
 
 it(
     'second init overwrite existing url',
+    /**
+     * @throws FailResetMockServerException
+     */
     function (): void {
         $expectedUrl = fake()->url();
         MockServer::init('https://notMy.url');
         MockServer::init($expectedUrl);
         expect(MockServer::getMockServerUrl())->toBe($expectedUrl);
+    }
+);
+
+it(
+    'count assertion correct without init',
+    function (): void {
+        expect(MockServer::getAssertionCount())->toBe(0);
+    }
+);
+
+it(
+    'count assertion correct without endpoints',
+    /**
+     * @throws FailResetMockServerException
+     */
+    function (): void {
+        $expectedUrl = fake()->url();
+        MockServer::init($expectedUrl);
+        expect(MockServer::getAssertionCount())->toBe(0);
+    }
+);
+
+it(
+    'count assertion correct without expectations',
+    /**
+     * @throws FailResetMockServerException
+     */
+    function (): void {
+        $expectedUrl = fake()->url();
+        MockServer::init($expectedUrl);
+        new MockServerEndpoint('/my/fake/path');
+        expect(MockServer::getAssertionCount())->toBe(0);
     }
 );
