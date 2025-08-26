@@ -78,8 +78,8 @@ class Connector
                             'id' => $expectation->uuid,
                         ],
                         'times' => [
-                            'atLeast' => $expectation->expectation->times,
-                            'atMost'  => $expectation->expectation->times,
+                            'atLeast' => $expectation->expectation->atLeast,
+                            'atMost'  => $expectation->expectation->atMost,
                         ],
                     ],
                 ]
