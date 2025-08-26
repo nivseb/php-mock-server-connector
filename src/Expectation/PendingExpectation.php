@@ -65,20 +65,6 @@ class PendingExpectation
     }
 
     /**
-     * @throws AlreadyExpectedExpectationException
-     */
-    public function times(int $limit): static
-    {
-        if ($this->remoteExpectation) {
-            throw new AlreadyExpectedExpectationException($this->remoteExpectation);
-        }
-
-        $this->expectation->times = $limit;
-
-        return $this;
-    }
-
-    /**
      * @param array<string, bool|float|int|string> $parameters
      *
      * @throws AlreadyExpectedExpectationException
@@ -138,5 +124,48 @@ class PendingExpectation
         $this->expectation->requestHeaders = $headers;
 
         return $this;
+    }
+
+    /**
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function between(int $minimum, int $maximum): static
+    {
+        if ($this->remoteExpectation) {
+            throw new AlreadyExpectedExpectationException($this->remoteExpectation);
+        }
+
+        $this->expectation->atLeast = $minimum;
+        $this->expectation->atMost  = $maximum;
+
+        return $this;
+    }
+
+    /**
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function times(int $limit): static
+    {
+        return $this->between($limit, $limit);
+    }
+
+    /**
+     * shorthand to ser time to 0.
+     *
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function never(): static
+    {
+        return $this->times(0);
+    }
+
+    /**
+     * shorthand to ser time to 1.
+     *
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function once(): static
+    {
+        return $this->times(1);
     }
 }

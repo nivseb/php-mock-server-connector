@@ -10,7 +10,7 @@ class ExpectationBuilder
     {
         return [
             'times' => [
-                'remainingTimes' => $expectation->times,
+                'remainingTimes' => $expectation->atMost,
             ],
             'httpRequest'  => static::buildRequestForMockServerExpectation($expectation),
             'httpResponse' => static::buildResponseForMockServerExpectation($expectation),

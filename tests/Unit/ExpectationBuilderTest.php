@@ -47,19 +47,20 @@ it(
 
 it(
     'expectation is build with correct times definition',
-    function (int $times): void {
-        $expectation = new MockServerExpectation('GET', '/', times: $times);
+    function (int $min, int $max): void {
+        $expectation = new MockServerExpectation('GET', '/', atLeast: $min, atMost: $max);
 
         expect(ExpectationBuilder::buildMockServerExpectation($expectation))
-            ->toMatchArray(['times' => ['remainingTimes' => $times]]);
+            ->toMatchArray(['times' => ['remainingTimes' => $max]]);
     }
 )
     ->with(
         [
-            'zero'  => [0],
-            'once'  => [1],
-            'twice' => [2],
-            'ten'   => [10],
+            'zero'      => [0, 0],
+            'once'      => [1, 1],
+            'twice'     => [2, 2],
+            'ten'       => [10, 10],
+            'up to ten' => [0, 10],
         ]
     );
 

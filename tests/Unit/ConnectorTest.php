@@ -194,15 +194,17 @@ it(
      * @throws VerificationFailException
      */
     function (): void {
-        $times             = fake()->numberBetween(1, 100);
+        $atLeast           = fake()->numberBetween(1, 50);
+        $atMost            = $atLeast + fake()->numberBetween(1, 50);
         $remoteExpectation = new RemoteExpectation(
             fake()->uuid,
-            new MockServerExpectation('METHOD', '/path', times: $times)
+            new MockServerExpectation('METHOD', '/path', atLeast: $atLeast, atMost: $atMost)
         );
-        $testConnector = new class($remoteExpectation->uuid, $times) extends Connector {
+        $testConnector = new class($remoteExpectation->uuid, $atLeast, $atMost) extends Connector {
             public function __construct(
                 protected string $uuid,
-                protected int $times
+                protected int $atLeast,
+                protected int $atMost,
             ) {
                 parent::__construct('');
             }
@@ -225,8 +227,8 @@ it(
                                         'id' => $this->uuid,
                                     ],
                                     'times' => [
-                                        'atLeast' => $this->times,
-                                        'atMost'  => $this->times,
+                                        'atLeast' => $this->atLeast,
+                                        'atMost'  => $this->atMost,
                                     ],
                                 ],
                             ],
