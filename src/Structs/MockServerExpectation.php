@@ -4,6 +4,11 @@ namespace Nivseb\PhpMockServerConnector\Structs;
 
 class MockServerExpectation
 {
+    /**
+     * @param array<string, array|bool|float|int|string> $pathParameters
+     * @param array<string, array|bool|float|int|string> $queryParameters
+     * @param array<string, array|bool|float|int|string> $requestHeaders
+     */
     public function __construct(
         public readonly string $method,
         public readonly string $url,

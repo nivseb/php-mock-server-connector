@@ -65,7 +65,7 @@ class PendingExpectation
     }
 
     /**
-     * @param array<string, bool|float|int|string> $parameters
+     * @param array<string, array|bool|float|int|string> $parameters
      *
      * @throws AlreadyExpectedExpectationException
      */
@@ -81,7 +81,7 @@ class PendingExpectation
     }
 
     /**
-     * @param array<string, bool|float|int|string> $parameters
+     * @param array<string, array|bool|float|int|string> $parameters
      *
      * @throws AlreadyExpectedExpectationException
      */
@@ -111,7 +111,7 @@ class PendingExpectation
     }
 
     /**
-     * @param array<string, bool|float|int|string> $headers
+     * @param array<string, array|bool|float|int|string> $headers
      *
      * @throws AlreadyExpectedExpectationException
      */
