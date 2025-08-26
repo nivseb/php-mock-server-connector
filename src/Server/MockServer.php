@@ -104,6 +104,15 @@ class MockServer
         }
     }
 
+    public static function getAssertionCount(): int
+    {
+        $count = 0;
+        foreach (static::$endpoints as $endpoint) {
+            $count += count($endpoint->getExpectations());
+        }
+        return $count;
+    }
+
     /**
      * @throws UnsuccessfulVerificationException
      * @throws FailResetMockServerException
