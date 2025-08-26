@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.0.0](https://github.com/nivseb/php-mock-server-connector/compare/v1.2.0...v2.0.0) (2025-08-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* **remove 8.1 support:** No more support for php 8.1
+
+### Features
+
+* allow multiple headers and parameters in expectation ([#26](https://github.com/nivseb/php-mock-server-connector/issues/26)) ([47fb1d4](https://github.com/nivseb/php-mock-server-connector/commit/47fb1d41de6ed7bf8d54c274ea7f13b64dc371ba))
+* **dev:** format and linting markdown files ([c10cb19](https://github.com/nivseb/php-mock-server-connector/commit/c10cb19eef674e92683b8ed88373e6b034e631ee))
+* Expectation count added as assertion count to test case ([#24](https://github.com/nivseb/php-mock-server-connector/issues/24)) ([c564e74](https://github.com/nivseb/php-mock-server-connector/commit/c564e741c4b5b7e48702396b6a858db3c87a58ae))
+* extend times definition in expectation ([#25](https://github.com/nivseb/php-mock-server-connector/issues/25)) ([7f2b1de](https://github.com/nivseb/php-mock-server-connector/commit/7f2b1def92fe8b4fa44f6a7970be12a26b3b6b1f))
+* **remove 8.1 support:** ([#21](https://github.com/nivseb/php-mock-server-connector/issues/21)) ([e6936ee](https://github.com/nivseb/php-mock-server-connector/commit/e6936ee2fc071436574a26a83036f35b34e3eaad))
+
+
+### Bug Fixes
+
+* **correct dev tools:** ([#22](https://github.com/nivseb/php-mock-server-connector/issues/22)) ([432dff4](https://github.com/nivseb/php-mock-server-connector/commit/432dff41d3d32229bf5a49142a430e5f160c28a8))
+
 ## [1.2.0](https://github.com/nivseb/php-mock-server-connector/compare/v1.1.1...v1.2.0) (2024-12-24)
 
 ### Features
