@@ -142,7 +142,7 @@ it(
      */
     function (): void {
         $remoteExpectation = new RemoteExpectation(
-            fake()->uuid,
+            fake()->uuid(),
             new MockServerExpectation('METHOD', '/path')
         );
         $testConnector = new class($remoteExpectation->uuid) extends Connector {
@@ -197,7 +197,7 @@ it(
         $atLeast           = fake()->numberBetween(1, 50);
         $atMost            = $atLeast + fake()->numberBetween(1, 50);
         $remoteExpectation = new RemoteExpectation(
-            fake()->uuid,
+            fake()->uuid(),
             new MockServerExpectation('METHOD', '/path', atLeast: $atLeast, atMost: $atMost)
         );
         $testConnector = new class($remoteExpectation->uuid, $atLeast, $atMost) extends Connector {
@@ -252,7 +252,7 @@ it(
      */
     function (): void {
         $remoteExpectation = new RemoteExpectation(
-            fake()->uuid,
+            fake()->uuid(),
             new MockServerExpectation('METHOD', '/path')
         );
 
@@ -322,7 +322,7 @@ it(
      */
     function (): void {
         $remoteExpectation = new RemoteExpectation(
-            fake()->uuid,
+            fake()->uuid(),
             new MockServerExpectation('METHOD', '/path')
         );
 
@@ -392,7 +392,7 @@ it(
      */
     function (): void {
         $remoteExpectation = new RemoteExpectation(
-            fake()->uuid,
+            fake()->uuid(),
             new MockServerExpectation('METHOD', '/path')
         );
 
