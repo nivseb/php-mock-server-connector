@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/nivseb/php-mock-server-connector/compare/v2.0.0...v2.0.1) (2025-09-16)
+
+
+### Miscellaneous Chores
+
+* Replace deprecated use of uuid property with uuid function call ([e74951c](https://github.com/nivseb/php-mock-server-connector/commit/e74951c6af02e8036f9848d88cfc459367152eb4))
+
 ## [2.0.0](https://github.com/nivseb/php-mock-server-connector/compare/v1.2.0...v2.0.0) (2025-08-26)
 
 
