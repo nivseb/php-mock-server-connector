@@ -84,7 +84,7 @@ class MockServer
         if (static::$connector) {
             return static::$connector;
         }
-        static::$connector = new Connector(static::$mockServerUrl);
+        static::$connector = Connector::fromUrl(static::$mockServerUrl);
 
         return static::$connector;
     }

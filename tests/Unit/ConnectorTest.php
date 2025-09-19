@@ -20,61 +20,40 @@ use Nivseb\PhpMockServerConnector\Structs\MockServerExpectation;
 use function Pest\Faker\fake;
 
 it(
-    'rest mock server correctly',
+    'resets mock server correctly',
     /**
      * @throws FailResetMockServerException
      */
     function (): void {
-        $testConnector = new class('') extends Connector {
-            protected function buildClient(string $mockServerUrl): Client
-            {
-                /** @var Client&MockInterface $clientMock */
-                $clientMock = Mockery::mock(Client::class);
+        /** @var Client&MockInterface $clientMock */
+        $clientMock    = Mockery::mock(Client::class);
+        $testConnector = new Connector($clientMock);
 
-                /** @var Expectation $expectation */
-                $expectation = $clientMock->allows('put');
-                $expectation
-                    ->once()
-                    ->withArgs(['/mockserver/reset'])
-                    ->andReturn(new Response());
-
-                return $clientMock;
-            }
-        };
+        $clientMock->allows('put')
+            ->once()
+            ->withArgs(['/mockserver/reset'])
+            ->andReturn(new Response());
 
         $testConnector->reset();
     }
 );
 
 it(
-    'reset throw exception for non 200 response status code',
+    'throws exception for non 200 response on reset',
     /**
      * @throws FailResetMockServerException
      */
     function (int $statusCode): void {
+        /** @var Client&MockInterface $clientMock */
+        $clientMock    = Mockery::mock(Client::class);
+        $testConnector = new Connector($clientMock);
+
         $response      = new Response($statusCode);
-        $testConnector = new class($response) extends Connector {
-            public function __construct(
-                protected Response $response
-            ) {
-                parent::__construct('');
-            }
 
-            protected function buildClient(string $mockServerUrl): Client
-            {
-                /** @var Client&MockInterface $clientMock */
-                $clientMock = Mockery::mock(Client::class);
-
-                /** @var Expectation $expectation */
-                $expectation = $clientMock->allows('put');
-                $expectation
-                    ->once()
-                    ->withArgs(['/mockserver/reset'])
-                    ->andReturn($this->response);
-
-                return $clientMock;
-            }
-        };
+        $clientMock->allows('put')
+            ->once()
+            ->withArgs(['/mockserver/reset'])
+            ->andReturn($response);
 
         expect(fn () => $testConnector->reset())
             ->toThrow(
@@ -94,34 +73,22 @@ it(
 ]);
 
 it(
-    'reset fail with guzzle client exception',
+    'wraps guzzle client exception on failed reset',
     /**
      * @throws FailResetMockServerException
      */
     function (): void {
+        /** @var Client&MockInterface $clientMock */
+        $clientMock      = Mockery::mock(Client::class);
+        $testConnector   = new Connector($clientMock);
+
         $guzzleException = new TransferException();
-        $testConnector   = new class($guzzleException) extends Connector {
-            public function __construct(
-                protected TransferException $guzzleException
-            ) {
-                parent::__construct('');
-            }
 
-            protected function buildClient(string $mockServerUrl): Client
-            {
-                /** @var Client&MockInterface $clientMock */
-                $clientMock = Mockery::mock(Client::class);
+        $clientMock->allows('put')
+            ->once()
+            ->withArgs(['/mockserver/reset'])
+            ->andThrow($guzzleException);
 
-                /** @var Expectation $expectation */
-                $expectation = $clientMock->allows('put');
-                $expectation
-                    ->once()
-                    ->withArgs(['/mockserver/reset'])
-                    ->andThrow($this->guzzleException);
-
-                return $clientMock;
-            }
-        };
 
         expect(fn () => $testConnector->reset())
             ->toThrow(
@@ -135,122 +102,99 @@ it(
 );
 
 it(
-    'verify remote expectation correctly',
+    'verifies remote expectations correctly',
     /**
      * @throws UnsuccessfulVerificationException
      * @throws VerificationFailException
      */
     function (): void {
+        /** @var Client&MockInterface $clientMock */
+        $clientMock        = Mockery::mock(Client::class);
+        $testConnector     = new Connector($clientMock);
+
         $remoteExpectation = new RemoteExpectation(
             fake()->uuid(),
             new MockServerExpectation('METHOD', '/path')
         );
-        $testConnector = new class($remoteExpectation->uuid) extends Connector {
-            public function __construct(
-                protected string $uuid
-            ) {
-                parent::__construct('');
-            }
 
-            protected function buildClient(string $mockServerUrl): Client
-            {
-                /** @var Client&MockInterface $clientMock */
-                $clientMock = Mockery::mock(Client::class);
-
-                /** @var Expectation $expectation */
-                $expectation = $clientMock->allows('put');
-                $expectation
-                    ->once()
-                    ->withArgs(
-                        [
-                            '/mockserver/verify',
-                            [
-                                'json' => [
-                                    'expectationId' => [
-                                        'id' => $this->uuid,
-                                    ],
-                                    'times' => [
-                                        'atLeast' => 1,
-                                        'atMost'  => 1,
-                                    ],
-                                ],
+        $clientMock->allows('put')
+            ->once()
+            ->withArgs(
+                [
+                    '/mockserver/verify',
+                    [
+                        'json' => [
+                            'expectationId' => [
+                                'id' => $remoteExpectation->uuid
                             ],
-                        ]
-                    )
-                    ->andReturn(new Response(202));
-
-                return $clientMock;
-            }
-        };
+                            'times' => [
+                                'atLeast' => 1,
+                                'atMost'  => 1,
+                            ],
+                        ],
+                    ],
+                ]
+            )
+            ->andReturn(new Response(202));
 
         $testConnector->verify($remoteExpectation);
     }
 );
 
 it(
-    'verify remote expectation verify multiple times expectation correct',
+    'verifies remote expectation received correct number of requests',
     /**
      * @throws UnsuccessfulVerificationException
      * @throws VerificationFailException
      */
     function (): void {
+        /** @var Client&MockInterface $clientMock */
+        $clientMock        = Mockery::mock(Client::class);
+        $testConnector     = new Connector($clientMock);
+
         $atLeast           = fake()->numberBetween(1, 50);
         $atMost            = $atLeast + fake()->numberBetween(1, 50);
         $remoteExpectation = new RemoteExpectation(
             fake()->uuid(),
             new MockServerExpectation('METHOD', '/path', atLeast: $atLeast, atMost: $atMost)
         );
-        $testConnector = new class($remoteExpectation->uuid, $atLeast, $atMost) extends Connector {
-            public function __construct(
-                protected string $uuid,
-                protected int $atLeast,
-                protected int $atMost,
-            ) {
-                parent::__construct('');
-            }
 
-            protected function buildClient(string $mockServerUrl): Client
-            {
-                /** @var Client&MockInterface $clientMock */
-                $clientMock = Mockery::mock(Client::class);
-
-                /** @var Expectation $expectation */
-                $expectation = $clientMock->allows('put');
-                $expectation
-                    ->once()
-                    ->withArgs(
-                        [
-                            '/mockserver/verify',
-                            [
-                                'json' => [
-                                    'expectationId' => [
-                                        'id' => $this->uuid,
-                                    ],
-                                    'times' => [
-                                        'atLeast' => $this->atLeast,
-                                        'atMost'  => $this->atMost,
-                                    ],
-                                ],
+        $clientMock->allows('put')
+            ->once()
+            ->withArgs(
+                [
+                    '/mockserver/verify',
+                    [
+                        'json' => [
+                            'expectationId' => [
+                                'id' => $remoteExpectation->uuid,
                             ],
-                        ]
-                    )
-                    ->andReturn(new Response(202));
-
-                return $clientMock;
-            }
-        };
+                            'times' => [
+                                'atLeast' => $atLeast,
+                                'atMost'  => $atMost,
+                            ],
+                        ],
+                    ],
+                ]
+            )
+            ->andReturn(new Response(202));
 
         $testConnector->verify($remoteExpectation);
     }
 );
 
 it(
-    'verify remote expectation correctly but receive bad result',
+    'throws exception for non-202 responses on verification',
     /**
      * @throws UnsuccessfulVerificationException
      * @throws VerificationFailException
      */
     function (): void {
+        /** @var Client&MockInterface $clientMock */
+        $clientMock        = Mockery::mock(Client::class);
+        $testConnector     = new Connector($clientMock);
+
+
         $remoteExpectation = new RemoteExpectation(
             fake()->uuid(),
             new MockServerExpectation('METHOD', '/path')
@@ -263,44 +207,25 @@ it(
             body: $body
         );
 
-        $testConnector = new class($remoteExpectation->uuid, $response) extends Connector {
-            public function __construct(
-                protected string $uuid,
-                protected Response $response
-            ) {
-                parent::__construct('');
-            }
-
-            protected function buildClient(string $mockServerUrl): Client
-            {
-                /** @var Client&MockInterface $clientMock */
-                $clientMock = Mockery::mock(Client::class);
-
-                /** @var Expectation $expectation */
-                $expectation = $clientMock->allows('put');
-                $expectation
-                    ->once()
-                    ->withArgs(
-                        [
-                            '/mockserver/verify',
-                            [
-                                'json' => [
-                                    'expectationId' => [
-                                        'id' => $this->uuid,
-                                    ],
-                                    'times' => [
-                                        'atLeast' => 1,
-                                        'atMost'  => 1,
-                                    ],
-                                ],
+        $clientMock->allows('put')
+            ->once()
+            ->withArgs(
+                [
+                    '/mockserver/verify',
+                    [
+                        'json' => [
+                            'expectationId' => [
+                                'id' => $remoteExpectation->uuid,
                             ],
-                        ]
-                    )
-                    ->andReturn($this->response);
-
-                return $clientMock;
-            }
-        };
+                            'times' => [
+                                'atLeast' => 1,
+                                'atMost'  => 1,
+                            ],
+                        ],
+                    ],
+                ]
+            )
+            ->andReturn($response);
 
         expect(fn () => $testConnector->verify($remoteExpectation))
             ->toThrow(
@@ -315,12 +240,16 @@ it(
 );
 
 it(
-    'verify remote expectation correctly but receive bad result with guzzle exception',
+    'wraps guzzle exception on unsuccessful verification',
     /**
      * @throws UnsuccessfulVerificationException
      * @throws VerificationFailException
      */
     function (): void {
+        /** @var Client&MockInterface $clientMock */
+        $clientMock        = Mockery::mock(Client::class);
+        $testConnector     = new Connector($clientMock);
+
         $remoteExpectation = new RemoteExpectation(
             fake()->uuid(),
             new MockServerExpectation('METHOD', '/path')
@@ -333,44 +262,26 @@ it(
             body: $body
         );
         $exception     = new RequestException('Exception', new Request('METHOD', '/path'), $response);
-        $testConnector = new class($remoteExpectation->uuid, $exception) extends Connector {
-            public function __construct(
-                protected string $uuid,
-                protected RequestException $exception
-            ) {
-                parent::__construct('');
-            }
 
-            protected function buildClient(string $mockServerUrl): Client
-            {
-                /** @var Client&MockInterface $clientMock */
-                $clientMock = Mockery::mock(Client::class);
-
-                /** @var Expectation $expectation */
-                $expectation = $clientMock->allows('put');
-                $expectation
-                    ->once()
-                    ->withArgs(
-                        [
-                            '/mockserver/verify',
-                            [
-                                'json' => [
-                                    'expectationId' => [
-                                        'id' => $this->uuid,
-                                    ],
-                                    'times' => [
-                                        'atLeast' => 1,
-                                        'atMost'  => 1,
-                                    ],
-                                ],
+        $clientMock->allows('put')
+            ->once()
+            ->withArgs(
+                [
+                    '/mockserver/verify',
+                    [
+                        'json' => [
+                            'expectationId' => [
+                                'id' => $remoteExpectation->uuid,
                             ],
-                        ]
-                    )
-                    ->andThrow($this->exception);
-
-                return $clientMock;
-            }
-        };
+                            'times' => [
+                                'atLeast' => 1,
+                                'atMost'  => 1,
+                            ],
+                        ],
+                    ],
+                ]
+            )
+            ->andThrow($exception);
 
         expect(fn () => $testConnector->verify($remoteExpectation))
             ->toThrow(
@@ -385,12 +296,16 @@ it(
 );
 
 it(
-    'verify fail guzzle exception',
+    'wraps guzzle exception on failed verification requests',
     /**
      * @throws UnsuccessfulVerificationException
      * @throws VerificationFailException
      */
     function (): void {
+        /** @var Client&MockInterface $clientMock */
+        $clientMock        = Mockery::mock(Client::class);
+        $testConnector     = new Connector($clientMock);
+
         $remoteExpectation = new RemoteExpectation(
             fake()->uuid(),
             new MockServerExpectation('METHOD', '/path')
@@ -398,44 +313,25 @@ it(
 
         $expectedException = new TransferException();
 
-        $testConnector = new class($remoteExpectation->uuid, $expectedException) extends Connector {
-            public function __construct(
-                protected string $uuid,
-                protected TransferException $exception
-            ) {
-                parent::__construct('');
-            }
-
-            protected function buildClient(string $mockServerUrl): Client
-            {
-                /** @var Client&MockInterface $clientMock */
-                $clientMock = Mockery::mock(Client::class);
-
-                /** @var Expectation $expectation */
-                $expectation = $clientMock->allows('put');
-                $expectation
-                    ->once()
-                    ->withArgs(
-                        [
-                            '/mockserver/verify',
-                            [
-                                'json' => [
-                                    'expectationId' => [
-                                        'id' => $this->uuid,
-                                    ],
-                                    'times' => [
-                                        'atLeast' => 1,
-                                        'atMost'  => 1,
-                                    ],
-                                ],
+        $clientMock->allows('put')
+            ->once()
+            ->withArgs(
+                [
+                    '/mockserver/verify',
+                    [
+                        'json' => [
+                            'expectationId' => [
+                                'id' => $remoteExpectation->uuid,
                             ],
-                        ]
-                    )
-                    ->andThrow($this->exception);
-
-                return $clientMock;
-            }
-        };
+                            'times' => [
+                                'atLeast' => 1,
+                                'atMost'  => 1,
+                            ],
+                        ],
+                    ],
+                ]
+            )
+            ->andThrow($expectedException);
 
         expect(fn () => $testConnector->verify($remoteExpectation))
             ->toThrow(
