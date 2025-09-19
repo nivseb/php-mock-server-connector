@@ -4,6 +4,9 @@ namespace Nivseb\PhpMockServerConnector\Expectation;
 
 use Nivseb\PhpMockServerConnector\Structs\MockServerExpectation;
 
+/**
+ * @deprecated the expectation builder will be removed with 3.0.0, caused by #33
+ */
 class ExpectationBuilder
 {
     public static function buildMockServerExpectation(MockServerExpectation $expectation): array
