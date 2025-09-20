@@ -23,6 +23,11 @@ class MockServerEndpoint
         return new PendingExpectation($this, $method, $url);
     }
 
+    public function duplicate(PendingExpectation $sourceExpectation): PendingExpectation
+    {
+        return clone $sourceExpectation;
+    }
+
     public function registerExpectation(RemoteExpectation $expectation): void
     {
         $this->expectations[$expectation->uuid] = $expectation;

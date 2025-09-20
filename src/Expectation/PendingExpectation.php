@@ -36,6 +36,12 @@ class PendingExpectation
         $this->run();
     }
 
+    public function __clone(): void
+    {
+        $this->expectation       = clone $this->expectation;
+        $this->remoteExpectation = null;
+    }
+
     /**
      * @throws FailCreateExpectationException
      * @throws MissingServerInitExceptionAbstract

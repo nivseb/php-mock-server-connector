@@ -110,6 +110,7 @@ class MockServer
         foreach (static::$endpoints as $endpoint) {
             $count += count($endpoint->getExpectations());
         }
+
         return $count;
     }
 
