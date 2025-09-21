@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.0](https://github.com/nivseb/php-mock-server-connector/compare/v2.0.1...v2.1.0) (2025-09-21)
+
+
+### Features
+
+* add naming for expecations ([#30](https://github.com/nivseb/php-mock-server-connector/issues/30)) ([b6674a6](https://github.com/nivseb/php-mock-server-connector/commit/b6674a6188ee9dfb26fd63874dbb412aa8ff45c1))
+* easier way to duplicate an expectation ([#35](https://github.com/nivseb/php-mock-server-connector/issues/35)) ([a92b6d0](https://github.com/nivseb/php-mock-server-connector/commit/a92b6d068488ea5683f6de07eb33024b7797cd7b))
+
+
+### Miscellaneous Chores
+
+* mark ExpectationBuilder as deprecated ([#34](https://github.com/nivseb/php-mock-server-connector/issues/34)) ([0ac5089](https://github.com/nivseb/php-mock-server-connector/commit/0ac5089264884f6492278c91e2b7f64c382fa130))
+
 ## [2.0.1](https://github.com/nivseb/php-mock-server-connector/compare/v2.0.0...v2.0.1) (2025-09-16)
 
 
