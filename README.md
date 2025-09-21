@@ -190,6 +190,26 @@ return an empty response with the status code 200.
 Advance
 -------
 
+### Naming Expectations
+
+If you have to add many expectations in the same test szenario, it can be difficult to differentiate between that
+expectations. For that case it is possible to give each expectation a custom name. By default,
+the name is build from method and path.
+
+```php
+    use Nivseb\PhpMockServerConnector\PhpUnit\UseMockServer;
+    use Nivseb\PhpMockServerConnector\PhpUnit\MockServerEndpoint;
+    use PHPUnit\Framework\TestCase;
+    use GuzzleHttp\Client;
+    
+    $mockServer = new MockServerEndpoint('/');
+    $mockServer->allows('GET', '/records/1')->andReturn(200);  // result to name `GET /records/1`
+    $mockServer->allows('GET', '/records/2')->name('Load Record 2')->andReturn(200); // result to name `Load Record 2`
+    $mockServer->allows('GET', '/records/3')->name('Load Record 3')->andReturn(200); // result to name `Load Record 3`
+```
+
+### Duplicate Expectation
+
 In some cases you expect nearly same request twice, but only with a little change in the response or request. In that case,
 you can build a new expectation from an existing and add your changes to the new one. this example shows a definition that
 expect 2 requests and answer the first one with a 200 response and the second call to with a 304 response.
@@ -204,7 +224,6 @@ expect 2 requests and answer the first one with a 200 response and the second ca
     $firstExpectation = $mockServer->allows('GET', '/')->once()->andReturn(200);
     $mockServer->duplicate($firstExpectation)->andReturn(304);
 ```
-
 
 Example
 -------

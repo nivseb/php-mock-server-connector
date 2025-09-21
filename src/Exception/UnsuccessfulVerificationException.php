@@ -14,6 +14,10 @@ class UnsuccessfulVerificationException extends AbstractMockServerException
         public ResponseInterface $response,
         ?Throwable $previous = null
     ) {
+        $message .= ' for expectation `';
+        $message .= $expectation->expectation->getName();
+        $message .= '`';
+
         parent::__construct($message, previous: $previous);
     }
 }

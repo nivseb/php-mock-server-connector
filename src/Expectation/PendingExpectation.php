@@ -38,7 +38,10 @@ class PendingExpectation
 
     public function __clone(): void
     {
-        $this->expectation       = clone $this->expectation;
+        $this->expectation = clone $this->expectation;
+        if ($this->expectation->name) {
+            $this->expectation->name = null;
+        }
         $this->remoteExpectation = null;
     }
 
@@ -57,7 +60,7 @@ class PendingExpectation
      *
      * @throws AlreadyExpectedExpectationException
      */
-    public function andReturn(int $statusCode, null|array|string $responseBody = null, ?array $headers = null): static
+    public function andReturn(int $statusCode, array|string|null $responseBody = null, ?array $headers = null): static
     {
         if ($this->remoteExpectation) {
             throw new AlreadyExpectedExpectationException($this->remoteExpectation);
@@ -173,5 +176,19 @@ class PendingExpectation
     public function once(): static
     {
         return $this->times(1);
+    }
+
+    /**
+     * @throws AlreadyExpectedExpectationException
+     */
+    public function name(string $expectationName): static
+    {
+        if ($this->remoteExpectation) {
+            throw new AlreadyExpectedExpectationException($this->remoteExpectation);
+        }
+
+        $this->expectation->name = $expectationName;
+
+        return $this;
     }
 }
