@@ -205,7 +205,6 @@ expect 2 requests and answer the first one with a 200 response and the second ca
     $mockServer->duplicate($firstExpectation)->andReturn(304);
 ```
 
-
 Example
 -------
 
