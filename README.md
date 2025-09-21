@@ -187,6 +187,25 @@ return an empty response with the status code 200.
     $mockServer->allows('GET', '/');
 ```
 
+Advance
+-------
+
+In some cases you expect nearly same request twice, but only with a little change in the response or request. In that case,
+you can build a new expectation from an existing and add your changes to the new one. this example shows a definition that
+expect 2 requests and answer the first one with a 200 response and the second call to with a 304 response.
+
+```php
+    use Nivseb\PhpMockServerConnector\PhpUnit\UseMockServer;
+    use Nivseb\PhpMockServerConnector\PhpUnit\MockServerEndpoint;
+    use PHPUnit\Framework\TestCase;
+    use GuzzleHttp\Client;
+    
+    $mockServer = new MockServerEndpoint('/');
+    $firstExpectation = $mockServer->allows('GET', '/')->once()->andReturn(200);
+    $mockServer->duplicate($firstExpectation)->andReturn(304);
+```
+
+
 Example
 -------
 
