@@ -51,12 +51,6 @@ class PendingExpectation
      */
     public function run(): void
     {
-        if (!$this->expectation->name) {
-            $this->expectation->name .= $this->expectation->method;
-            $this->expectation->name .= ' ';
-            $this->expectation->name .= $this->expectation->url;
-        }
-
         $this->remoteExpectation = MockServer::applyExpectation($this->expectation);
         $this->mockServerEndpoint->registerExpectation($this->remoteExpectation);
     }

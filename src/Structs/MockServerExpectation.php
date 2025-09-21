@@ -23,4 +23,9 @@ class MockServerExpectation
         public array|string|null $requestBody = null,
         public ?string $name = null,
     ) {}
+
+    public function getName(): string
+    {
+        return $this->name ?: $this->method.' '.$this->url;
+    }
 }

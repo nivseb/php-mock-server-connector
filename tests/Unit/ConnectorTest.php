@@ -306,7 +306,7 @@ it(
             ->toThrow(
                 function (UnsuccessfulVerificationException $exception) use ($remoteExpectation, $response): void {
                     expect($exception->getMessage())
-                        ->toBe('Request not found exactly 1 times')
+                        ->toBe('Request not found exactly 1 times for expectation `METHOD /path`')
                         ->and($exception->expectation)->toBe($remoteExpectation)
                         ->and($exception->response)->toBe($response);
                 }
@@ -376,7 +376,7 @@ it(
             ->toThrow(
                 function (UnsuccessfulVerificationException $exception) use ($remoteExpectation, $response): void {
                     expect($exception->getMessage())
-                        ->toBe('Request not found exactly 1 times')
+                        ->toBe('Request not found exactly 1 times for expectation `METHOD /path`')
                         ->and($exception->expectation)->toBe($remoteExpectation)
                         ->and($exception->response)->toBe($response);
                 }
