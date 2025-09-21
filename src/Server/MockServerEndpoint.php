@@ -34,7 +34,7 @@ class MockServerEndpoint
     }
 
     /**
-     * @return array<string, MockServerEndpoint>
+     * @return array<string, RemoteExpectation>
      */
     public function getExpectations(): array
     {
