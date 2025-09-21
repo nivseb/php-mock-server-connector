@@ -21,5 +21,6 @@ class MockServerExpectation
         public ?array $queryParameters = null,
         public ?array $requestHeaders = null,
         public null|array|string $requestBody = null,
+        public ?string $name = null,
     ) {}
 }
