@@ -16,11 +16,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class Connector
 {
-    protected Client $client;
+    public function __construct(
+        protected Client $client,
+    ) {}
 
-    public function __construct(string $mockServerUrl)
+    public static function fromUrl(string $mockServerUrl): self
     {
-        $this->client = $this->buildClient($mockServerUrl);
+        return new self(new Client(['base_uri' => $mockServerUrl]));
     }
 
     /**
@@ -108,11 +110,6 @@ class Connector
                 $exception
             );
         }
-    }
-
-    protected function buildClient(string $mockServerUrl): Client
-    {
-        return new Client(['base_uri' => $mockServerUrl]);
     }
 
     protected function getMessageFromResponse(ResponseInterface $response): string
