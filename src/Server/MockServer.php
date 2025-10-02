@@ -26,11 +26,14 @@ class MockServer
     {
         static::$mockServerUrl = $mockServerUrl;
         static::$endpoints     = [];
-        static::reset();
+        if (static::$mockServerUrl) {
+            static::reset();
+        }
     }
 
     /**
      * @throws FailResetMockServerException
+     * @throws MissingServerInitExceptionAbstract
      */
     public static function reset(): void
     {
@@ -38,7 +41,7 @@ class MockServer
             $endpoint->resetExpectations();
         }
 
-        static::$connector?->reset();
+        static::getConnector()->reset();
     }
 
     public static function getMockServerUrl(): string
@@ -92,15 +95,12 @@ class MockServer
     /**
      * @throws UnsuccessfulVerificationException
      * @throws VerificationFailException
+     * @throws MissingServerInitExceptionAbstract
      */
     public static function verify(): void
     {
-        if (!static::$connector) {
-            return;
-        }
-
         foreach (static::$endpoints as $endpoint) {
-            $endpoint->verify(static::$connector);
+            $endpoint->verify(static::getConnector());
         }
     }
 
@@ -121,6 +121,9 @@ class MockServer
      */
     public static function close(): void
     {
+        if (!static::$mockServerUrl) {
+            return;
+        }
         static::verify();
         static::reset();
     }
