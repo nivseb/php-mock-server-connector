@@ -121,7 +121,10 @@ class MockServer
      */
     public static function close(): void
     {
-        static::verify();
-        static::reset();
+        try {
+            static::verify();
+        } finally {
+            static::reset();
+        }
     }
 }
